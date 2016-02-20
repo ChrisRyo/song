@@ -1,4 +1,4 @@
-package tw.com.exception;
+package tw.com.logic.exception;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

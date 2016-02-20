@@ -1,0 +1,59 @@
+package tw.com.view.resource;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import tw.com.model.vo.Member;
+import tw.com.service.MemberService;
+import tw.com.service.Impl.MemberServiceImpl;
+
+
+/**
+ * 
+ * @author chrisryo
+ * 
+ * 註 : @Consumes接受類型, @Produces返回類型
+ *
+ */ 
+@Path("/member")
+public class MemberRest {
+	
+	private MemberServiceImpl memberService = new MemberServiceImpl();
+	
+	
+	/**
+	 * 取所有資料
+	 * 
+	 * @return
+	 * @throws Exception 
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Member> getAllMember() throws Exception {
+		return memberService.getMember();
+	}
+	
+	/**
+	 *  寫入資料
+	 *  
+	 * @param member
+	 * @return
+	 * @throws Exception 
+	 */
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Member> getTodos(Member member) throws Exception {
+		
+		memberService.addUser(member.getId(), member.getPwd(), member.getEmail(), member.getPhone());
+		return memberService.getMember();
+    }
+	
+}

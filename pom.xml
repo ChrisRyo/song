@@ -17,8 +17,8 @@
 		<log4j.version>1.7.1</log4j.version>
 		<ejb.version>3.0</ejb.version>
 		<hibernate.version>5.1.0.Final</hibernate.version>
-		<hibernate.api.version>1.0.1.Final</hibernate.api.version>
-		<mysql.version>5.1.34</mysql.version>
+		<hibernate.api.version>1.0.0.Final</hibernate.api.version>
+		<mysql.version>5.1.38</mysql.version>
 	</properties>
 
 	<dependencies>
@@ -71,12 +71,32 @@
 			<artifactId>jersey-mvc-jsp</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
+		<!-- jersey group end-->
 
 		<!-- google app engine -->
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
 			<version>${appengine.version}</version>
+		</dependency>
+		
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>${hibernate.api.version}</version>
+		</dependency>
+		
+		<!-- jdbc dependency -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
 		</dependency>
 
 	</dependencies>

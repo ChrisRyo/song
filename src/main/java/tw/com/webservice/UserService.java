@@ -10,7 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import tw.com.model.bean.UserBean;
+import tw.com.view.bean.UserBean;
 
 @Path("/UserService")
 public class UserService {

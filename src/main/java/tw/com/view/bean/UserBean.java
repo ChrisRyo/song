@@ -1,4 +1,4 @@
-package tw.com.model.bean;
+package tw.com.view.bean;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;

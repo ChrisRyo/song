@@ -9,12 +9,12 @@ import javax.ws.rs.QueryParam;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-@Path("/hello")
-public class HelloResource {
+@Path("/sample")
+public class SampleRest {
 	@GET
 	public Viewable sayHello(@QueryParam("name") @DefaultValue("World") String name) {
 		HashMap<String, String> model = new HashMap<String, String>();
 		model.put("name", name);
-		return new Viewable("/hello", model);
+		return new Viewable("/sample", model);
 	}
 }
