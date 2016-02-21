@@ -21,7 +21,6 @@ import lombok.Data;
 public class Expenses implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	@Temporal(TemporalType.DATE)
 	@Column(name="bill_date")
 	private Date billDate;
@@ -31,6 +30,7 @@ public class Expenses implements Serializable {
 
 	private BigDecimal amt;
 
+	@Id
 	@Column(name="bill_store")
 	private String billStore;
 

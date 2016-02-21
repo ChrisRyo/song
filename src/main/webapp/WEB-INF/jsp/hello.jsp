@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value="expenses.js"/>"></script>
 </head>
 <body>
 	Hello,

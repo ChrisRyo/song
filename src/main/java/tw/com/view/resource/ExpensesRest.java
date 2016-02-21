@@ -9,6 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.server.mvc.Viewable;
+
 import tw.com.model.vo.Expenses;
 import tw.com.service.Impl.ExpensesServiceImpl;
 
@@ -25,6 +27,10 @@ public class ExpensesRest {
 	
 	private ExpensesServiceImpl service = new ExpensesServiceImpl();
 	
+	@GET
+	public Viewable init() {
+		return new Viewable("/expenses");
+	}
 	
 	/**
 	 * 取所有資料
@@ -33,8 +39,9 @@ public class ExpensesRest {
 	 * @throws Exception 
 	 */
 	@GET
+	@Path("queryAll")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Expenses> getAllMember() throws Exception {
+	public List<Expenses> getAllExpenses() throws Exception {
 		return service.getExpenses();
 	}
 	
@@ -46,6 +53,7 @@ public class ExpensesRest {
 	 * @throws Exception 
 	 */
 	@POST
+	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Expenses> getTodos(Expenses entity) throws Exception {
