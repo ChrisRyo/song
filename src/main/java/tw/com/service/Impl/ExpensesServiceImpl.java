@@ -2,6 +2,7 @@ package tw.com.service.Impl;
 
 import java.util.List;
 
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -13,18 +14,12 @@ import tw.com.service.ExpensesService;
 /**
  * Session Bean implementation class MemberBean
  */
+@Singleton
 public class ExpensesServiceImpl implements ExpensesService {
 	
 	@PersistenceContext
 	private EntityManager em = EntityManagerHelper.getEntityManager();
 
-    /**
-     * Default constructor. 
-     */
-    public ExpensesServiceImpl() {
-    
-    }
-    
 	/**
 	 * 新增
 	 * 
@@ -32,7 +27,6 @@ public class ExpensesServiceImpl implements ExpensesService {
 	 *            Id
 	 * @throws Exception
 	 */
-    @Override
     public void addExpenses(Expenses entity) throws Exception {
         em.persist(entity);
         em.flush();
@@ -46,7 +40,6 @@ public class ExpensesServiceImpl implements ExpensesService {
      */
  
 	@SuppressWarnings("unchecked")
-	@Override
     public List<Expenses> getExpenses() throws Exception {
         List<Expenses> list = null;
         Query query = em.createNamedQuery("Expenses.findAll");

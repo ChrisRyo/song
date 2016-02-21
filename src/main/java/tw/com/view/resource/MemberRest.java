@@ -2,7 +2,7 @@ package tw.com.view.resource;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -10,9 +10,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.server.mvc.Viewable;
+
 import tw.com.model.vo.Member;
 import tw.com.service.MemberService;
-import tw.com.service.Impl.MemberServiceImpl;
 
 
 /**
@@ -25,8 +26,13 @@ import tw.com.service.Impl.MemberServiceImpl;
 @Path("/member")
 public class MemberRest {
 	
-	private MemberServiceImpl memberService = new MemberServiceImpl();
+	@Inject
+    private MemberService memberService;
 	
+	@GET
+	public Viewable init() {
+		return new Viewable("/member");
+	}
 	
 	/**
 	 * 取所有資料
@@ -35,6 +41,7 @@ public class MemberRest {
 	 * @throws Exception 
 	 */
 	@GET
+	@Path("queryAll")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Member> getAllMember() throws Exception {
 		return memberService.getMember();
@@ -48,6 +55,7 @@ public class MemberRest {
 	 * @throws Exception 
 	 */
 	@POST
+	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Member> getTodos(Member member) throws Exception {

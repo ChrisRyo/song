@@ -2,6 +2,7 @@ package tw.com.view.resource;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.mvc.Viewable;
 
 import tw.com.model.vo.Expenses;
-import tw.com.service.Impl.ExpensesServiceImpl;
+import tw.com.service.ExpensesService;
 
 
 /**
@@ -25,7 +26,12 @@ import tw.com.service.Impl.ExpensesServiceImpl;
 @Path("/expenses")
 public class ExpensesRest {
 	
-	private ExpensesServiceImpl service = new ExpensesServiceImpl();
+	private final ExpensesService service;
+
+	@Inject
+	public ExpensesRest(ExpensesService service) {
+		this.service = service;
+	}
 	
 	@GET
 	public Viewable init() {
