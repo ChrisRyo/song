@@ -9,8 +9,8 @@ public interface MemberService {
 	/**
 	 * 新增用戶
 	 * 
-	 * @param id
-	 *            Id
+	 * @param name
+	 *            name
 	 * @param pws
 	 *            Password
 	 * @param email
@@ -19,7 +19,7 @@ public interface MemberService {
 	 *            Phone
 	 * @throws Exception
 	 */
-	public void addUser(String id, String pws, String email, String phone)
+	public void addUser(String name, String pws, String email, String phone)
 			throws Exception;
 	
 	

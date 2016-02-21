@@ -4,6 +4,8 @@
 	version="1.0">
   <persistence-unit name="jpaDemo" transaction-type="RESOURCE_LOCAL">
   <class>tw.com.model.vo.Expenses</class>
+  <class>tw.com.model.vo.Member</class>
+  
       <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
          <property name="hibernate.connection.driver_class" value="org.gjt.mm.mysql.Driver"/>
