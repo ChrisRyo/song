@@ -121,7 +121,7 @@
 	function findAll(){
 	    $.ajax({
 	        type: 'GET',
-	        url: "/test3/expenses/queryAll",
+	        url: "/song/expenses/queryAll",
 	        dataType: "json", // data type of response
 
 	        success: function(expensesList){
@@ -141,7 +141,7 @@
 		$.ajax({
 	        type: 'POST',
 	        contentType: 'application/json',
-	        url: "/test3/expenses/add",
+	        url: "/song/expenses/add",
 	        dataType: "json",
 	        data: formToJSON(),
 	        success: function(expensesList){

@@ -49,7 +49,7 @@ function initMemberGrid(){
 function findAll(){
     $.ajax({
         type: 'GET',
-        url: "/test3/member/queryAll",
+        url: "/song/member/queryAll",
         dataType: "json", // data type of response
         
         success: function(memberList){
@@ -69,7 +69,7 @@ function addUser(){
 	$.ajax({
         type: 'POST',
         contentType: 'application/json',
-        url: "/test3/member/add",
+        url: "/song/member/add",
         dataType: "json",
         data: formToJSON(),
         success: function(memberList){
