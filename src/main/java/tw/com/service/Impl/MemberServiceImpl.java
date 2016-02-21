@@ -31,8 +31,8 @@ public class MemberServiceImpl implements MemberService {
 	/**
 	 * 新增用戶
 	 * 
-	 * @param id
-	 *            Id
+	 * @param name
+	 *            name
 	 * @param pws
 	 *            Password
 	 * @param email
@@ -42,13 +42,13 @@ public class MemberServiceImpl implements MemberService {
 	 * @throws Exception
 	 */
 	@Override
-	public void addUser(String id, String pwd, String email, String phone)
+	public void addUser(String name, String pwd, String email, String phone)
 			throws Exception {
 		
 		EntityTransaction transaction = em.getTransaction();
 		try {
 			Member member = new Member();
-			member.setId(id);
+			member.setName(name);
 			member.setPwd(pwd);
 			member.setEmail(email);
 			member.setPhone(phone);
@@ -61,6 +61,8 @@ public class MemberServiceImpl implements MemberService {
 			System.out.println("Error Saving Customer: " + e.getMessage());
 
 			transaction.rollback();
+			
+			throw new Exception(e.getMessage());
 		}
 	}
     

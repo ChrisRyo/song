@@ -60,7 +60,7 @@ public class MemberRest {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Member> getTodos(Member member) throws Exception {
 		
-		memberService.addUser(member.getId(), member.getPwd(), member.getEmail(), member.getPhone());
+		memberService.addUser(member.getName(), member.getPwd(), member.getEmail(), member.getPhone());
 		return memberService.getMember();
     }
 	

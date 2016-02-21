@@ -14,7 +14,7 @@
 </head>
 <body>
 	<form id = "memberForm">
-		<label>User Name:</label><input type="text" id="id"/><br/>
+		<label>User Name:</label><input type="text" id="name"/><br/>
 		<label>Password:</label><input type="password" id="pws"/><br/>
 		<label>email:</label><input type="text" id="email"/><br/>
 		<label>phone:</label><input type="text" id="phone"/><br/>
@@ -37,7 +37,7 @@ function initMemberGrid(){
 	      height: 250,
 	      colNames:['帳號','密碼', 'E-MAIL', '電話'],
 	      colModel:[
-	        {name:'id',index:'id', width:90, align:'center'},
+	        {name:'name',index:'name', width:90, align:'center'},
 	        {name:'pws',index:'invdate', width:90, align:'center', edittype:"password"},
 	        {name:'email',index:'email', width:150, align:'center'},
 	        {name:'phone',index:'phone', width:100, align:'center'}
@@ -53,6 +53,7 @@ function findAll(){
         dataType: "json", // data type of response
         
         success: function(memberList){
+        	$("#memberGrid").jqGrid("clearGridData", true).trigger("reloadGrid");
         	for(var i in memberList){
         		$("#memberGrid").jqGrid('addRowData',i+1,memberList[i]); 
         	}
@@ -87,7 +88,7 @@ function addUser(){
 
 function formToJSON() {
 	return JSON.stringify({
-        "id": $('#id').val(),
+        "name": $('#name').val(),
         "pws": $('#pws').val(),
         "email": $('#email').val(),
         "phone": $('#phone').val()
