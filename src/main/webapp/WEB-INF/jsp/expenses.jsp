@@ -14,9 +14,11 @@
 <!-- 最新編譯和最佳化的 JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script src="//cdn.jsdelivr.net/jqgrid/4.5.2/jquery.jqGrid.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/4.6.0/css/ui.jqgrid.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/4.6.0/plugins/jquery.contextmenu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/4.6.0/js/i18n/grid.locale-tw.js"></script>
+
 <style>
 	#expensesForm{
 		padding-top: 80px;
@@ -64,22 +66,22 @@
 		</div>
 	</div>
 </nav>
-	<form id = "expensesForm" style="width:50%">
-		<input id="inBillDate" placeholder="請款日" required="" autofocus="" type="text">
-		<input id="inRealDate" placeholder="發生日期" required="" autofocus="" type="text">
-        <input id="inBillStore" placeholder="請款店家" required="" autofocus="" type="text">
-        <input id="inRealStore" placeholder="發生店家" required="" autofocus="" type="text">
-        <input id="inSource" placeholder="支出去向" required="" autofocus="" type="text">
-        <input id="inAccountIteam" placeholder="項目" required="" autofocus="" type="text">
-        <input id="inDetail" placeholder="支出內容" required="" autofocus="" type="text">
-        <input id="inPayee" placeholder="請款人" required="" autofocus="" type="text">
-        <input id="inWorkTime" placeholder="時間" required="" autofocus="" type="text">
-        <input id="inWorkType" placeholder="班別" required="" autofocus="" type="text">
-        <input id="inPrice" placeholder="單價" required="" autofocus="" type="text">
-        <input id="inQuantity" placeholder="數量" required="" autofocus="" type="text">
-        <input id="inUnit" placeholder="單位" required="" autofocus="" type="text">
-        <input id="inAmt" placeholder="金額" required="" autofocus="" type="text">
-
+	<form id = "expensesForm" style="width:70%">
+		<input id="billDate" placeholder="請款日" required="" autofocus="" type="text">
+		<input id="realDate" placeholder="發生日期" required="" autofocus="" type="text">
+        <input id="billStore" placeholder="請款店家" required="" autofocus="" type="text">
+        <input id="realStore" placeholder="發生店家" required="" autofocus="" type="text">
+        <input id="source" placeholder="支出去向" required="" autofocus="" type="text">
+        <input id="accountIteam" placeholder="項目" required="" autofocus="" type="text">
+        <input id="detail" placeholder="支出內容" required="" autofocus="" type="text">
+        <input id="payee" placeholder="請款人" required="" autofocus="" type="text">
+        <input id="workTime" placeholder="時間" required="" autofocus="" type="text">
+        <input id="workType" placeholder="班別" required="" autofocus="" type="text">
+        <input id="price" placeholder="單價" required="" autofocus="" type="text">
+        <input id="quantity" placeholder="數量" required="" autofocus="" type="text">
+        <input id="unit" placeholder="單位" required="" autofocus="" type="text">
+        <input id="amt" placeholder="金額" required="" autofocus="" type="text">
+		<br/>
 		<input class="btn btn-info" type="button" value="新增" onclick="addUser();"/>
 	</form>
 </body>
@@ -95,7 +97,7 @@
 
 	function initExpensesGrid(){
 		$("#expensesGrid").jqGrid({
-		      datatype: "local",
+		       datatype: "local",
 		      height: 250,
 		      colNames:['請款日','發生日期', '請款店家', '發生店家','支出去向','項目','支出內容','請款人','時間','班別','單價','數量','單位','金額'],
 		      colModel:[
@@ -114,7 +116,9 @@
 		        {name:'unit',index:'unit', width:150, align:'center'},
 		        {name:'amt',index:'amt', width:150, align:'center'}
 		       ],
-		      caption: "Expenses data grid"
+		       multiSort : true,
+		      caption: "Expenses data grid" 
+			
 		});  // jqGrid
 	}
 
