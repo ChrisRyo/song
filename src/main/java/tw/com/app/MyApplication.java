@@ -2,6 +2,7 @@ package tw.com.app;
 
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.mvc.MvcFeature;
 import org.glassfish.jersey.server.mvc.beanvalidation.MvcBeanValidationFeature;
 import org.glassfish.jersey.server.mvc.jsp.JspMvcFeature;
 
@@ -24,6 +25,7 @@ public class MyApplication extends ResourceConfig{
     	register(MyFilter.class);
     	
     	// MVC.
+    	register(MvcFeature.class);
     	// Bean Validation
         register(MvcBeanValidationFeature.class);
         // JSP

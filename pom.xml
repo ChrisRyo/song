@@ -45,20 +45,6 @@
 			<version>${jersey.version}</version>
 		</dependency>
 
-		<!-- Servlet -->
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-
-		<!-- bean validation -->
-		<dependency>
-			<groupId>org.glassfish.jersey.ext</groupId>
-			<artifactId>jersey-mvc-bean-validation</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-
 		<!-- MVC -->
 		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
@@ -68,6 +54,13 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-mvc-jsp</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		
+		<!-- bean validation -->
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-mvc-bean-validation</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
 

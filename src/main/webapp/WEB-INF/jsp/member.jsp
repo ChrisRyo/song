@@ -10,6 +10,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script src="//cdn.jsdelivr.net/jqgrid/4.5.2/jquery.jqGrid.js"></script>
 
+<script src="js/member.js"></script>
+
 <title>sampleWork</title>
 </head>
 <body>

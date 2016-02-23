@@ -1,7 +1,9 @@
 package tw.com.model.vo;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -17,17 +19,20 @@ public class Expenses implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Temporal(TemporalType.DATE)
-	@Column(name="bill_date")
-	private Date billDate;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+	
+	@Column(name="bill_store")
+	private String billStore;
 
 	@Column(name="account_iteam")
 	private String accountIteam;
 
 	private BigDecimal amt;
 
-	@Column(name="bill_store")
-	private String billStore;
+	@Temporal(TemporalType.DATE)
+	@Column(name="bill_date")
+	private Date billDate;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="creat_time")
@@ -73,12 +78,12 @@ public class Expenses implements Serializable {
 	public Expenses() {
 	}
 
-	public Date getBillDate() {
-		return this.billDate;
+	public String getBillStore() {
+		return this.billStore;
 	}
 
-	public void setBillDate(Date billDate) {
-		this.billDate = billDate;
+	public void setBillStore(String billStore) {
+		this.billStore = billStore;
 	}
 
 	public String getAccountIteam() {
@@ -97,12 +102,12 @@ public class Expenses implements Serializable {
 		this.amt = amt;
 	}
 
-	public String getBillStore() {
-		return this.billStore;
+	public Date getBillDate() {
+		return this.billDate;
 	}
 
-	public void setBillStore(String billStore) {
-		this.billStore = billStore;
+	public void setBillDate(Date billDate) {
+		this.billDate = billDate;
 	}
 
 	public Date getCreatTime() {
@@ -127,6 +132,14 @@ public class Expenses implements Serializable {
 
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getMark() {

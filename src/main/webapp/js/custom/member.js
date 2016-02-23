@@ -1,5 +1,7 @@
 $( document ).ready(function() {
 	
+	alert(14123);
+	
     initMemberGrid();
     
     findAll();
