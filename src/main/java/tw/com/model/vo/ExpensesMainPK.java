@@ -1,12 +1,16 @@
 package tw.com.model.vo;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import lombok.Data;
 
 /**
  * The primary key class for the expensesMain database table.
  * 
  */
+@Data
 @Embeddable
 public class ExpensesMainPK implements Serializable {
 	//default serial version id, required for serializable classes.
@@ -18,21 +22,6 @@ public class ExpensesMainPK implements Serializable {
 
 	@Column(name="bill_store")
 	private String billStore;
-
-	public ExpensesMainPK() {
-	}
-	public java.util.Date getBillDate() {
-		return this.billDate;
-	}
-	public void setBillDate(java.util.Date billDate) {
-		this.billDate = billDate;
-	}
-	public String getBillStore() {
-		return this.billStore;
-	}
-	public void setBillStore(String billStore) {
-		this.billStore = billStore;
-	}
 
 	public boolean equals(Object other) {
 		if (this == other) {

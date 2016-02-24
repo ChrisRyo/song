@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.mvc.Viewable;
 
 import tw.com.model.vo.Member;
-import tw.com.service.MemberService;
+import tw.com.service.CommonService;
 
 
 /**
@@ -27,7 +27,7 @@ import tw.com.service.MemberService;
 public class MemberRest {
 	
 	@Inject
-    private MemberService memberService;
+	private CommonService service;
 	
 	@GET
 	public Viewable init() {
@@ -40,11 +40,12 @@ public class MemberRest {
 	 * @return
 	 * @throws Exception 
 	 */
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("queryAll")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Member> getAllMember() throws Exception {
-		return memberService.getMember();
+		return (List<Member>) service.queryAll(Member.class);
 	}
 	
 	/**
@@ -54,14 +55,48 @@ public class MemberRest {
 	 * @return
 	 * @throws Exception 
 	 */
+	@SuppressWarnings("unchecked")
 	@POST
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Member> getTodos(Member member) throws Exception {
-		
-		memberService.addUser(member.getName(), member.getPwd(), member.getEmail(), member.getPhone());
-		return memberService.getMember();
+    public List<Member> add(Member member) throws Exception {
+		service.insertByEntity(member);
+		return (List<Member>) service.queryAll(Member.class);
+    }
+	
+	/**
+	 *  更新資料
+	 *  
+	 * @param member
+	 * @return
+	 * @throws Exception 
+	 */
+	@SuppressWarnings("unchecked")
+	@POST
+	@Path("update")
+	@Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Member> update(Member member) throws Exception {
+		service.updateByEntity(member);
+		return (List<Member>) service.queryAll(Member.class);
+    }
+	
+	/**
+	 *  寫入資料
+	 *  
+	 * @param member
+	 * @return
+	 * @throws Exception 
+	 */
+	@SuppressWarnings("unchecked")
+	@POST
+	@Path("remove")
+	@Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Member> remove(Member member) throws Exception {
+		service.deleteByEntity(member);
+		return (List<Member>) service.queryAll(Member.class);
     }
 	
 }

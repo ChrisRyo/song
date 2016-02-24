@@ -1,0 +1,96 @@
+package tw.com.service.Impl;
+
+import java.util.List;
+
+import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import tw.com.entityManager.EntityManagerHelper;
+import tw.com.service.CommonService;
+
+/**
+ * CommonService
+ * 
+ * @author chrisryo
+ *
+ */
+@Singleton
+public class CommonServiceImpl implements CommonService {
+
+	@PersistenceContext
+	private EntityManager em = EntityManagerHelper.getEntityManager();
+	
+	/**
+	 * 取得所有資料
+	 * 
+	 * @param entity
+	 * @return
+	 * @throws Exception
+	 */
+	public List<?> queryAll(Class<?> entity) throws Exception {
+		List<?> list = null;
+		Query query = em.createNamedQuery(entity.getSimpleName() + ".findAll");
+		list = (List<?>) query.getResultList();
+		return list;
+	}
+	
+	/**
+	 * 新增
+	 * 
+	 * @param entity
+	 * @throws Exception
+	 */
+	public void insertByEntity(Object entity) throws Exception {
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			em.persist(entity);
+			em.flush();
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			throw new Exception(e);
+		}
+	}
+	
+	/**
+	 * 修改
+	 * 
+	 * @param entity
+	 * @throws Exception
+	 */
+	public void updateByEntity(Object entity) throws Exception {
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			em.merge(entity);
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			throw new Exception(e);
+		}
+	}
+	
+	/**
+	 * 刪除
+	 * 
+	 * @param entity
+	 * @throws Exception
+	 */
+	public void deleteByEntity(Object entity) throws Exception {
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			Object newEntity = em.merge(entity);
+			em.remove(newEntity);
+			em.flush();
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			throw new Exception(e);
+		}
+	}
+}
