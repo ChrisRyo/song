@@ -13,37 +13,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ErrorMessage {
 
-	@XmlElement(name = "status")
-	int status;
+  @XmlElement(name = "status")
+  int status;
 
-	@XmlElement(name = "exception")
-	String exception;
+  @XmlElement(name = "exception")
+  String exception;
 
-	@XmlElement(name = "message")
-	String msg;
+  @XmlElement(name = "message")
+  String msg;
 
-	@XmlElement(name = "developerMessage")
-	String devMsg;
-	
-//	@XmlElement(name = "info")
-//	Map<String, Object> info = new HashMap<String, Object>();
+  @XmlElement(name = "developerMessage")
+  String devMsg;
 
-	public int getStatus() {
-		return status;
-	}
+  // @XmlElement(name = "info")
+  // Map<String, Object> info = new HashMap<String, Object>();
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+  public int getStatus() {
+    return status;
+  }
 
-	public ErrorMessage(Exception ex) {
-		this.status = 9999;
-		this.exception = ex.getClass().getSimpleName();
-		this.msg = ex.getMessage();
-//		this.devMsg = ex.getCause().getMessage();
-	}
+  public void setStatus(int status) {
+    this.status = status;
+  }
 
-	public ErrorMessage() {
-	}
+  public ErrorMessage(Exception ex) {
+    this.status = 9999;
+    this.exception = ex.getClass().getSimpleName();
+    this.msg = ex.getMessage();
+    // this.devMsg = ex.getCause().getMessage();
+  }
+
+  public ErrorMessage() {}
 
 }

@@ -15,23 +15,23 @@ import tw.com.view.bean.UserBean;
 @Path("/UserService")
 public class UserService {
 
-	UserDao userDao = new UserDao();
+  UserDao userDao = new UserDao();
 
-	@GET
-	@Path("/users")
-	@Produces(MediaType.APPLICATION_XML)
-	public List<User> getUsers() {
-		return userDao.getAllUsers();
-	}
-	
-	@POST
-	@Path("/userpost")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public List<User> getUserpost(@Valid UserBean bean) {
-		List<User> list = userDao.getAllUsers();
-		
-		list.add(new User(bean.getId(), bean.getName(), bean.getProfession()));
-		
-		return list;
-	}
+  @GET
+  @Path("/users")
+  @Produces(MediaType.APPLICATION_XML)
+  public List<User> getUsers() {
+    return userDao.getAllUsers();
+  }
+
+  @POST
+  @Path("/userpost")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public List<User> getUserpost(@Valid UserBean bean) {
+    List<User> list = userDao.getAllUsers();
+
+    list.add(new User(bean.getId(), bean.getName(), bean.getProfession()));
+
+    return list;
+  }
 }

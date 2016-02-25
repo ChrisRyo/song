@@ -11,10 +11,10 @@ import org.glassfish.jersey.server.mvc.Viewable;
 
 @Path("/sample")
 public class SampleRest {
-	@GET
-	public Viewable sayHello(@QueryParam("name") @DefaultValue("World") String name) {
-		HashMap<String, String> model = new HashMap<String, String>();
-		model.put("name", name);
-		return new Viewable("/sample", model);
-	}
+  @GET
+  public Viewable sayHello(@QueryParam("name") @DefaultValue("World") String name) {
+    HashMap<String, String> model = new HashMap<String, String>();
+    model.put("name", name);
+    return new Viewable("/sample", model);
+  }
 }

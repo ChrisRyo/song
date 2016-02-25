@@ -12,59 +12,107 @@ import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-import tw.com.model.vo.Expenses;
-import tw.com.service.ExpensesService;
+import tw.com.model.vo.Member;
+import tw.com.service.CommonService;
 
 
 /**
  * 
  * @author chrisryo
  * 
- * 註 : @Consumes接受類型, @Produces返回類型
+ *         註 : @Consumes接受類型, @Produces返回類型
  *
- */ 
+ */
 @Path("/expenses")
 public class ExpensesRest {
-	
-	private final ExpensesService service;
 
-	@Inject
-	public ExpensesRest(ExpensesService service) {
-		this.service = service;
-	}
-	
-	@GET
-	public Viewable init() {
-		return new Viewable("/expenses");
-	}
-	
-	/**
-	 * 取所有資料
-	 * 
-	 * @return
-	 * @throws Exception 
-	 */
-	@GET
-	@Path("queryAll")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Expenses> getAllExpenses() throws Exception {
-		return service.getExpenses();
-	}
-	
-	/**
-	 *  寫入資料
-	 *  
-	 * @param member
-	 * @return
-	 * @throws Exception 
-	 */
-	@POST
-	@Path("add")
-	@Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Expenses> getTodos(Expenses entity) throws Exception {
-		service.addExpenses(entity);
-		return service.getExpenses();
-    }
-	
+  @Inject
+  private CommonService service;
+
+  @GET
+  public Viewable init() {
+    return new Viewable("/expenses");
+  }
+
+  /**
+   * 取所有資料
+   * 
+   * @return
+   * @throws Exception
+   */
+  @GET
+  @Path("queryAll")
+  @Produces(MediaType.APPLICATION_JSON)
+  @SuppressWarnings("unchecked")
+  public List<Member> getAllMember() throws Exception {
+    return (List<Member>) service.queryAll(Member.class);
+  }
+
+  /**
+   * 取所有資料
+   * 
+   * @return
+   * @throws Exception
+   */
+
+  @POST
+  @Path("query")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @SuppressWarnings("unchecked")
+  public List<Member> getAllMember(Member member) throws Exception {
+    return (List<Member>) service.queryByEntity(member);
+  }
+
+  /**
+   * 寫入資料
+   * 
+   * @param member
+   * @return
+   * @throws Exception
+   */
+  @SuppressWarnings("unchecked")
+  @POST
+  @Path("add")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<Member> add(Member member) throws Exception {
+    service.insertByEntity(member);
+    return (List<Member>) service.queryAll(Member.class);
+  }
+
+  /**
+   * 更新資料
+   * 
+   * @param member
+   * @return
+   * @throws Exception
+   */
+  @SuppressWarnings("unchecked")
+  @POST
+  @Path("update")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<Member> update(Member member) throws Exception {
+    service.updateByEntity(member);
+    return (List<Member>) service.queryAll(Member.class);
+  }
+
+  /**
+   * 刪除資料
+   * 
+   * @param member
+   * @return
+   * @throws Exception
+   */
+  @SuppressWarnings("unchecked")
+  @POST
+  @Path("remove")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<Member> remove(Member member) throws Exception {
+    service.deleteByEntity(member);
+    return (List<Member>) service.queryAll(Member.class);
+  }
+
 }

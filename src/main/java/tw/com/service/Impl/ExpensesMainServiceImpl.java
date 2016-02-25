@@ -18,45 +18,44 @@ import tw.com.service.ExpensesService;
 @Singleton
 public class ExpensesMainServiceImpl implements ExpensesService {
 
-	@PersistenceContext
-	private EntityManager em = EntityManagerHelper.getEntityManager();
+  @PersistenceContext
+  private EntityManager em = EntityManagerHelper.getEntityManager();
 
-	/**
-	 * 新增
-	 * 
-	 * @param Expenses
-	 *            Id
-	 * @throws Exception
-	 */
-	public void addExpenses(Expenses entity) throws Exception {
-		EntityTransaction transaction = em.getTransaction();
-		try {
-			transaction.begin();
-			em.persist(entity);
-			em.flush();
-			transaction.commit();
-		} catch (Exception e) {
-			System.out.println("Error Saving Customer: " + e.getMessage());
+  /**
+   * 新增
+   * 
+   * @param Expenses Id
+   * @throws Exception
+   */
+  public void addExpenses(Expenses entity) throws Exception {
+    EntityTransaction transaction = em.getTransaction();
+    try {
+      transaction.begin();
+      em.persist(entity);
+      em.flush();
+      transaction.commit();
+    } catch (Exception e) {
+      System.out.println("Error Saving Customer: " + e.getMessage());
 
-			transaction.rollback();
+      transaction.rollback();
 
-			throw new Exception(e);
-		}
-	}
+      throw new Exception(e);
+    }
+  }
 
-	/**
-	 * 取得所有資料
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
+  /**
+   * 取得所有資料
+   * 
+   * @return
+   * @throws Exception
+   */
 
-	@SuppressWarnings("unchecked")
-	public List<Expenses> getExpenses() throws Exception {
-		List<Expenses> list = null;
-		Query query = em.createNamedQuery("Expenses.findAll");
-		list = (List<Expenses>) query.getResultList();
-		return list;
-	}
+  @SuppressWarnings("unchecked")
+  public List<Expenses> getExpenses() throws Exception {
+    List<Expenses> list = null;
+    Query query = em.createNamedQuery("Expenses.findAll");
+    list = (List<Expenses>) query.getResultList();
+    return list;
+  }
 
 }

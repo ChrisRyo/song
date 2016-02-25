@@ -9,13 +9,13 @@ import javax.ws.rs.ext.Provider;
 import tw.com.logic.exception.ErrorMessage;
 
 @Provider
-public class ConstraintViolationsExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
+public class ConstraintViolationsExceptionMapper implements
+    ExceptionMapper<ConstraintViolationException> {
 
-	public Response toResponse(ConstraintViolationException ex) {
-		// TODO: use ServerProperties.BV_SEND_ERROR_IN_RESPONSE
-		return Response.status(500).entity(
-				new ErrorMessage(ex)
-				).type(MediaType.APPLICATION_JSON).build();
-	}
+  public Response toResponse(ConstraintViolationException ex) {
+    // TODO: use ServerProperties.BV_SEND_ERROR_IN_RESPONSE
+    return Response.status(500).entity(new ErrorMessage(ex)).type(MediaType.APPLICATION_JSON)
+        .build();
+  }
 
 }

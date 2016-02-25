@@ -16,31 +16,31 @@ import lombok.Data;
  */
 @Data
 @Entity
-@NamedQuery(name="ExpensesMain.findAll", query="SELECT e FROM ExpensesMain e")
+@NamedQuery(name = "ExpensesMain.findAll", query = "SELECT e FROM ExpensesMain e")
 public class ExpensesMain implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private ExpensesMainPK id;
+  @EmbeddedId
+  private ExpensesMainPK id;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="creat_time")
-	private Date creatTime;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "creat_time")
+  private Date creatTime;
 
-	@Column(name="creat_user")
-	private String creatUser;
+  @Column(name = "creat_user")
+  private String creatUser;
 
-	@Column(name="total_amt")
-	private BigDecimal totalAmt;
+  @Column(name = "total_amt")
+  private BigDecimal totalAmt;
 
-	@Column(name="update_mark")
-	private int updateMark;
+  @Column(name = "update_mark")
+  private int updateMark;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="update_time")
-	private Date updateTime;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "update_time")
+  private Date updateTime;
 
-	@Column(name="update_user")
-	private String updateUser;
-	
+  @Column(name = "update_user")
+  private String updateUser;
+
 }

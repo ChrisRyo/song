@@ -16,66 +16,66 @@ import lombok.Data;
  */
 @Data
 @Entity
-@Table(name="expenses")
-@NamedQuery(name="Expenses.findAll", query="SELECT e FROM Expenses e")
+@Table(name = "expenses")
+@NamedQuery(name = "Expenses.findAll", query = "SELECT e FROM Expenses e")
 public class Expenses implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
-	
-	@Column(name="bill_store")
-	private String billStore;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int id;
 
-	@Column(name="account_iteam")
-	private String accountIteam;
+  @Column(name = "bill_store")
+  private String billStore;
 
-	private BigDecimal amt;
+  @Column(name = "account_iteam")
+  private String accountIteam;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="bill_date")
-	private Date billDate;
+  private BigDecimal amt;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="creat_time")
-	private Date creatTime;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "bill_date")
+  private Date billDate;
 
-	@Column(name="creat_user")
-	private String creatUser;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "creat_time")
+  private Date creatTime;
 
-	private String detail;
+  @Column(name = "creat_user")
+  private String creatUser;
 
-	private String mark;
+  private String detail;
 
-	private String payee;
+  private String mark;
 
-	private BigDecimal price;
+  private String payee;
 
-	private BigDecimal quantity;
+  private BigDecimal price;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="real_date")
-	private Date realDate;
+  private BigDecimal quantity;
 
-	@Column(name="real_store")
-	private String realStore;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "real_date")
+  private Date realDate;
 
-	private String source;
+  @Column(name = "real_store")
+  private String realStore;
 
-	private String unit;
+  private String source;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="update_time")
-	private Date updateTime;
+  private String unit;
 
-	@Column(name="update_user")
-	private String updateUser;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "update_time")
+  private Date updateTime;
 
-	@Column(name="work_time")
-	private String workTime;
+  @Column(name = "update_user")
+  private String updateUser;
 
-	@Column(name="work_type")
-	private int workType;
+  @Column(name = "work_time")
+  private String workTime;
+
+  @Column(name = "work_type")
+  private int workType;
 
 }

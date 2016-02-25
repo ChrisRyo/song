@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "member")
-@NamedQuery(name="Member.findAll", query="SELECT m FROM Member m")
+@NamedQuery(name = "Member.findAll", query = "SELECT m FROM Member m")
 public class Member implements Serializable {
 	private static final long serialVersionUID = 1L;
 

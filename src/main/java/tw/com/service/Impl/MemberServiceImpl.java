@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
         List<Member> memberList = null;
         Query query = em.createNamedQuery("Member.findAll");
         memberList = (List<Member>) query.getResultList();
-        return memberList;
-    }
+    return memberList;
+  }
 
 }
