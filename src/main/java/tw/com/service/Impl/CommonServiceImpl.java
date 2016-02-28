@@ -71,9 +71,10 @@ public class CommonServiceImpl implements CommonService {
    */
   public List<?> queryByEntity(Object entity, int begin, int length) throws Exception {
     List<?> list = null;
-    String sql = EntityUtils.getQueryEntitySql(entity, begin, length);
+    String sql = EntityUtils.getQueryEntitySql(entity);
 
-    Query query = em.createQuery(sql).setMaxResults(MAX_COUNT);
+    Query query =
+        em.createQuery(sql).setMaxResults(MAX_COUNT).setFirstResult(begin).setMaxResults(length);
     list = (List<?>) query.getResultList();
     return list;
   }

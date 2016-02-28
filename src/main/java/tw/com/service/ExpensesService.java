@@ -12,7 +12,7 @@ public interface ExpensesService {
   /**
    * 新增
    * 
-   * @param Expenses Id
+   * @param ExpensesBean Id
    * @throws Exception
    */
   public void addExpenses(Expenses entity) throws Exception;

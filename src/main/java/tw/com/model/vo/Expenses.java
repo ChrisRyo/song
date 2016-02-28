@@ -3,8 +3,12 @@ package tw.com.model.vo;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import tw.com.jersey.moxyAdapter.DateAdapter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import lombok.Data;
@@ -22,31 +26,33 @@ public class Expenses implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer index;
 
-  @Column(name = "bill_store")
-  private String billStore;
-
-  @Column(name = "account_iteam")
+  @Column(name="account_iteam")
   private String accountIteam;
 
   private BigDecimal amt;
 
   @Temporal(TemporalType.DATE)
-  @Column(name = "bill_date")
+  @Column(name="bill_date")
+  @XmlJavaTypeAdapter(DateAdapter.class)
   private Date billDate;
 
-  @Temporal(TemporalType.DATE)
-  @Column(name = "creat_time")
-  private Date creatTime;
+  @Column(name="bill_store")
+  private String billStore;
 
-  @Column(name = "creat_user")
+  @Column(name="creat_time")
+  private Timestamp creatTime;
+
+  @Column(name="creat_user")
   private String creatUser;
 
   private String detail;
 
   private String mark;
+  
+  private Integer payeeUnit;
 
   private String payee;
 
@@ -55,27 +61,27 @@ public class Expenses implements Serializable {
   private BigDecimal quantity;
 
   @Temporal(TemporalType.DATE)
-  @Column(name = "real_date")
+  @Column(name="real_date")
+  @XmlJavaTypeAdapter(DateAdapter.class)
   private Date realDate;
 
-  @Column(name = "real_store")
+  @Column(name="real_store")
   private String realStore;
 
   private String source;
 
   private String unit;
 
-  @Temporal(TemporalType.DATE)
-  @Column(name = "update_time")
-  private Date updateTime;
+  @Column(name="update_time")
+  private Timestamp updateTime;
 
-  @Column(name = "update_user")
+  @Column(name="update_user")
   private String updateUser;
 
-  @Column(name = "work_time")
+  @Column(name="work_time")
   private String workTime;
 
-  @Column(name = "work_type")
-  private int workType;
+  @Column(name="work_type")
+  private Integer workType;
 
 }

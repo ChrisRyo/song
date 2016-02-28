@@ -12,7 +12,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-import tw.com.model.vo.Member;
+import tw.com.model.vo.Expenses;
+import tw.com.model.vo.ExpensesMain;
 import tw.com.service.CommonService;
 
 
@@ -35,17 +36,17 @@ public class ExpensesRest {
   }
 
   /**
-   * 取所有資料
+   * 取主檔資料
    * 
    * @return
    * @throws Exception
    */
-  @GET
-  @Path("queryAll")
+  @POST
+  @Path("queryMain")
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @SuppressWarnings("unchecked")
-  public List<Member> getAllMember() throws Exception {
-    return (List<Member>) service.queryAll(Member.class);
+  public List<ExpensesMain> getMainExpenses(ExpensesMain entity) throws Exception {
+    return this.getMainData(entity);
   }
 
   /**
@@ -54,65 +55,140 @@ public class ExpensesRest {
    * @return
    * @throws Exception
    */
-
   @POST
-  @Path("query")
+  @Path("queryDetail")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @SuppressWarnings("unchecked")
-  public List<Member> getAllMember(Member member) throws Exception {
-    return (List<Member>) service.queryByEntity(member);
+  public List<Expenses> getAllExpenses(Expenses expenses) throws Exception {
+    return this.getDetailData(expenses);
   }
 
   /**
-   * 寫入資料
+   * 寫入主檔資料
    * 
-   * @param member
+   * @param ExpensesMain
+   * @return
+   * @throws Exception
+   */
+  @POST
+  @Path("addMain")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<ExpensesMain> addMain(ExpensesMain expensesMain) throws Exception {
+    service.insertByEntity(expensesMain);
+    return this.getMainData(expensesMain);
+  }
+
+  /**
+   * 寫入明細資料
+   * 
+   * @param expenses
+   * @return
+   * @throws Exception
+   */
+  @POST
+  @Path("addDetail")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<Expenses> add(Expenses expenses) throws Exception {
+    service.insertByEntity(expenses);
+    return this.getDetailData(expenses);
+  }
+
+  /**
+   * 更新主檔資料
+   * 
+   * @param ExpensesMain
+   * @return
+   * @throws Exception
+   */
+  @POST
+  @Path("updateMain")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<ExpensesMain> updateMain(ExpensesMain expensesMain) throws Exception {
+    service.updateByEntity(expensesMain);
+    return this.getMainData(expensesMain);
+  }
+
+  /**
+   * 更新明細資料
+   * 
+   * @param expenses
+   * @return
+   * @throws Exception
+   */
+  @POST
+  @Path("updateDetail")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<Expenses> updateDetail(Expenses expenses) throws Exception {
+    service.updateByEntity(expenses);
+    return this.getDetailData(expenses);
+  }
+
+  /**
+   * 刪除主檔資料
+   * 
+   * @param expenses
+   * @return
+   * @throws Exception
+   */
+
+  @POST
+  @Path("removeMain")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<ExpensesMain> removeMain(ExpensesMain expensesMain) throws Exception {
+    service.deleteByEntity(expensesMain);
+    return this.getMainData(expensesMain);
+  }
+
+  /**
+   * 刪除明細資料
+   * 
+   * @param expenses
+   * @return
+   * @throws Exception
+   */
+  @POST
+  @Path("removeDetail")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<Expenses> remove(Expenses expenses) throws Exception {
+    service.deleteByEntity(expenses);
+    return this.getDetailData(expenses);
+  }
+
+  /**
+   * 
+   * @param expensesMain
    * @return
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
-  @POST
-  @Path("add")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<Member> add(Member member) throws Exception {
-    service.insertByEntity(member);
-    return (List<Member>) service.queryAll(Member.class);
+  private List<ExpensesMain> getMainData(ExpensesMain expensesMain) throws Exception {
+    return (List<ExpensesMain>) service.queryByEntity(expensesMain);
   }
 
   /**
-   * 更新資料
    * 
-   * @param member
+   * @param expenses
    * @return
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
-  @POST
-  @Path("update")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<Member> update(Member member) throws Exception {
-    service.updateByEntity(member);
-    return (List<Member>) service.queryAll(Member.class);
-  }
-
-  /**
-   * 刪除資料
-   * 
-   * @param member
-   * @return
-   * @throws Exception
-   */
-  @SuppressWarnings("unchecked")
-  @POST
-  @Path("remove")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<Member> remove(Member member) throws Exception {
-    service.deleteByEntity(member);
-    return (List<Member>) service.queryAll(Member.class);
+  private List<Expenses> getDetailData(Expenses expenses) throws Exception {
+    
+    if (expenses.getBillDate() == null || expenses.getBillStore() == null) {
+      throw new Exception("缺少查詢條件");
+    }
+    
+    Expenses queryDto = new Expenses();
+    queryDto.setBillDate(expenses.getBillDate());
+    queryDto.setBillStore(expenses.getBillStore());
+    
+    return (List<Expenses>) service.queryByEntity(queryDto);
   }
 
 }

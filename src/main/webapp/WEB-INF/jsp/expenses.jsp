@@ -1,99 +1,275 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" isELIgnored="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="js/tools/jquery.min.js"></script>
-<!-- 最新編譯和最佳化的 CSS -->
-<link rel="stylesheet" href="css/tools/bootstrap.min.css">
-<!-- 選擇性佈景主題 -->
-<link rel="stylesheet" href="css/tools/bootstrap-theme.min.css">
-<link href="css/tools/bootstrap-theme.min.css" rel="stylesheet">
-<!-- 最新編譯和最佳化的 JavaScript -->
-<script type="text/javascript" src="js/tools/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/tools/jquery.jqGrid.min.js"></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<!-- 自訂 -->
-<script type="text/javascript" src="js/custom/expenses.js"></script>
+<jsp:include page="../jsp/common/header.jsp" />
+<!-- 自訂 css (位置要固定)-->
+<!-- jqgrid -->
+<link rel="stylesheet" href="plugins/jqGrid/css/ui.jqgrid.css">
 
-<style>
-	#expensesForm{
-		padding-top: 80px;
-		padding-left: 15px;
-	}
-    #expensesForm input{
-        padding-left: 5px;
-    }
-</style>
-
-<title>Sample</title>
+<!-- Select2 -->
+<link rel="stylesheet" href="plugins/almsaeed/plugins/select2/select2.min.css">
 </head>
-<body>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">Bootstrap theme</a>
-		</div>
-		<div id="navbar" class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#about">About</a></li>
-				<li><a href="#contact">Contact</a></li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li class="divider"></li>
-						<li class="dropdown-header">Nav header</li>
-						<li><a href="#">Separated link</a></li>
-						<li><a href="#">One more separated link</a></li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
-	<div class="form-group">
-  		<label for="usr">Name:</label>
-  		<input type="text" class="form-control" id="usr">
-	</div>
-	<form id = "expensesForm" style="width:70%">
-		<input id="billDate" placeholder="請款日" required="" autofocus="" type="text">
-		<input id="realDate" placeholder="發生日期" required="" autofocus="" type="text">
-        <input id="billStore" placeholder="請款店家" required="" autofocus="" type="text">
-        <input id="realStore" placeholder="發生店家" required="" autofocus="" type="text">
-        <input id="source" placeholder="支出去向" required="" autofocus="" type="text">
-        <input id="accountIteam" placeholder="項目" required="" autofocus="" type="text">
-        <input id="detail" placeholder="支出內容" required="" autofocus="" type="text">
-        <input id="payee" placeholder="請款人" required="" autofocus="" type="text">
-        <input id="workTime" placeholder="時間" required="" autofocus="" type="text">
-        <input id="workType" placeholder="班別" required="" autofocus="" type="text">
-        <input id="price" placeholder="單價" required="" autofocus="" type="text">
-        <input id="quantity" placeholder="數量" required="" autofocus="" type="text">
-        <input id="unit" placeholder="單位" required="" autofocus="" type="text">
-        <input id="amt" placeholder="金額" required="" autofocus="" type="text">
-		<br/>
-		<input class="btn btn-info" type="button" value="新增" onclick="addUser();"/>
-	</form>
-</body>
-<br><br><br>
-<body>
-<div class="jqGrid">
-  <table id="expensesGrid"></table>
-</div>
-</body>
+<jsp:include page="../jsp/common/topmenu.jsp" />
 
-<!-- table-striped -->
+<!-- Main content -->
+<form id="expensesForm">
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>
+				支出功能作業 <small>支出支出支出支出支出噢！！</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+				<li class="active">Here</li>
+			</ol>
+		</section>
+		<section class="content">
+			<!-- begin -->
+			<!-- menu 1 -->
+			<div class="box box-default" id="tableMain">
+				<div class="box-header with-border">
+					<h3 class="box-title">支出主檔</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<!-- box-body -->
+				<div class="box-body">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>請款日期</label>
+									<div>
+										<input type="text" id="billDate" placeholder="YYYY-MM-DD" class="form-control">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>請款店家</label>
+									<div>
+										<select id="billStore" class="form-control select2"></select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="control-group">
+								<div class="col-md-1">
+									<input class="btn btn-block btn-success btn-sm" type="button" value="查詢" onclick="findMain();" />
+								</div>
+								<div class="col-md-1">
+									<input class="btn btn-block btn-primary btn-sm" type="button" value="新增" onclick="addMain();" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- grid 1 -->
+			<div class="box box-default">
+				<div class="box-header with-border">
+					<h3 class="box-title">Main Data Table</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div class="jqGrid_wrapper">
+						<table id="grid1"></table>
+						<div id="jqGrid1Pager"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- menu 2 -->
+			<div class="box box-default">
+				<div class="box-header with-border">
+					<h3 class="box-title">支出明細</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<!-- box-body -->
+				<div class="box-body">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>發生日期</label>
+									<div>
+										<input type="hidden" id="index"> <input type="text" id="realDate" placeholder="YYYY-MM-DD">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>發生店家</label>
+									<div>
+										<select id="realStore" class="form-control select2"></select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>支出去向</label>
+									<div>
+										<input type="text" id="source" placeholder="支出去向">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>項目</label>
+									<div>
+										<input type="text" id="accountIteam" placeholder="項目">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>請款單位</label>
+									<div>
+										<select id="payeeUnit" class="form-control select2"></select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>請款人</label>
+									<div>
+										<select id="payee" class="form-control select2"></select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>支出內容</label>
+									<div>
+										<input type="text" id="detail" placeholder="支出內容">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>時間</label>
+									<div>
+										<input type="text" id="workTime" placeholder="時間">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>班別</label>
+									<div>
+										<input type="text" id="workType" placeholder="班別">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>單價</label>
+									<div>
+										<input type="text" id="price" placeholder="單價">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>數量</label>
+									<div>
+										<input type="text" id="quantity" placeholder="數量">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>單位</label>
+									<div>
+										<input type="text" id="unit" placeholder="單位">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>金額</label>
+									<div>
+										<input type="text" id="amt" placeholder="金額">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-10">
+								<div class="form-group">
+									<label>備註</label>
+									<div>
+										<input type="text" id="mark" size="100%" placeholder="備註">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-1">
+								<input class="btn btn-block btn-primary btn-sm" type="button" value="新增" onclick="addDetail();" />
+							</div>
+							<div class="col-md-1">
+								<input class="btn btn-block btn-warning btn-sm" type="button" value="修改" onclick="updateDetail();" />
+							</div>
+							<div class="col-md-1">
+								<input class="btn btn-block btn-danger btn-sm" type="button" value="刪除" onclick="deleteDetail();" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- grid 2 -->
+			<div class="box box-default">
+				<div class="box-header with-border">
+					<h3 class="box-title">Detail Data Table</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div class="jqGrid_wrapper">
+						<table id="grid2"></table>
+						<div id="jqGrid2Pager"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</form>
+<!-- /.content -->
+<jsp:include page="../jsp/common/endmenu.jsp" />
+<jsp:include page="../jsp/common/footer.jsp" />
+<!-- 自訂 js (位置要固定)-->
+<!-- jqgrid -->
+<script src="plugins/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script src="plugins/jqGrid/js/grid.locale-tw.js"></script>
+<!-- Select2 -->
+<script src="plugins/almsaeed/plugins/select2/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/almsaeed/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/almsaeed/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/almsaeed/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+
+
+<script type="text/javascript" src="js/expenses.js"></script>
+</body>
 </html>
