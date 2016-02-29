@@ -1,6 +1,7 @@
 package tw.com.model.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -43,16 +44,19 @@ public class ExpensesMain implements Serializable {
   @Column(name = "bill_store")
   private String billStore;
 
-  @Column(name="creat_time")
+  @Column(name = "real_total_amt")
+  private BigDecimal realTotalAmt;
+
+  @Column(name = "creat_time")
   private Timestamp creatTime;
 
-  @Column(name="creat_user")
+  @Column(name = "creat_user")
   private String creatUser;
 
-  @Column(name="update_time")
+  @Column(name = "update_time")
   private Timestamp updateTime;
 
-  @Column(name="update_user")
+  @Column(name = "update_user")
   private String updateUser;
 
   @PrePersist

@@ -16,7 +16,7 @@ var comValidation = function() {
 
         var cond = condition[i];
 
-        $("#" + form + " [id=" + cond.name + "]").attr("class", cond.rule);
+        $("#" + form + " [id=" + cond.name + "]").addClass(cond.rule);
 
       }
 

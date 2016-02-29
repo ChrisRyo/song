@@ -1,19 +1,39 @@
+var formId = "expensesForm";
+var grid1 = "grid1";
+var grid2 = "grid2";
+var table1 = "table1";
+var table1Grid = "table1Grid";
+var table2 = "table2";
+var table2Grid = "table2Grid";
+
 $(document).ready(function() {
+
+  // input style
+  $("#" + table1 + " :input[type=text]").addClass("form-control input-sm");
+  $("#" + table1 + " select").addClass("form-control");
 
   // 取下拉選單
   initMenu();
 
   // select2
-  $(".select2").select2();
+  $("#table1 .select2").select2();
 
   // TODO 為了消除死不隱藏的 aria-hidden=true
   $("[aria-hidden=true]").hide();
 
   // 表單驗證
-  comValidation.validationInit(condition, "expensesForm");
+  comValidation.validationInit(condition, formId);
 
   initExpensesGrid();
 
+  $('#table2').on('shown.bs.modal', function() {
+
+    // input style
+    $("#" + table2 + " :input[type=text]").addClass("form-control input-sm");
+    $("#" + table2 + " select").addClass("form-control");
+
+    $("#table2 .select2").select2();
+  })
 });
 
 var condition = [{
@@ -22,6 +42,9 @@ var condition = [{
 }, {
   name: "billStore",
   rule: "validate[maxSize[20]]"
+}, {
+  name: "realTotalAmt",
+  rule: "validate[custom[number]], max[999999999999999]"
 }, {
   name: "realDate",
   rule: "validate[custom[date]]"
@@ -102,42 +125,49 @@ function initMenu() {
       alert(thrownError);
     }
   });
-  
-  $("#payee").select2({
-    width : "70%", //若你的版面是 RWD 可以這樣，讓他重新調整寬度
-    placeholder : "要查找的會員編號",
-    
-    //使用如$.ajax 參閱 ajax
-    ajax : 
-    {
-        url: "/song/menu/queryPayee?unit="+$("#payeeUnit").val()+"&name="+$("#payee").val(),
-        dataType: 'json', 
-        type: "GET", 
-        //成功返回的項目
-        results: function (data) 
-        { 
-            //因為 dataType: 'html' 所以要自己解碼喔。但用html可以方便debug。
-            console.log(data);
-            
-            var obj = $.parseJSON(data);
-            if (obj.status == "success") return {results: obj.data};
-            
-            //假設我自己回傳的值不等於success，我希望選單項目是空的 :D 可以這麼寫
-            var empty = [{id:0, text: null}]
-            return {results: empty};
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          alert(xhr.status);
-          alert(thrownError);
-        }
-    }
-});
+
+  $("#payee").select2(
+          {
+            width: "70%", // 若你的版面是 RWD 可以這樣，讓他重新調整寬度
+            placeholder: "要查找的會員編號",
+
+            // 使用如$.ajax 參閱 ajax
+            ajax: {
+              url: "/song/menu/queryPayee?unit=" + $("#payeeUnit").val()
+                      + "&name=" + $("#payee").val(),
+              dataType: 'json',
+              type: "GET",
+              // 成功返回的項目
+              results: function(data) {
+                // 因為 dataType: 'html' 所以要自己解碼喔。但用html可以方便debug。
+                console.log(data);
+
+                var obj = $.parseJSON(data);
+                if (obj.status == "success") return {
+                  results: obj.data
+                };
+
+                // 假設我自己回傳的值不等於success，我希望選單項目是空的 :D 可以這麼寫
+                var empty = [{
+                  id: 0,
+                  text: null
+                }]
+                return {
+                  results: empty
+                };
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+              }
+            }
+          });
 
 }
 
 function initExpensesGrid() {
 
-  $("#grid1").jqGrid({
+  $("#" + grid1).jqGrid({
     datatype: "json",
     styleUI: 'Bootstrap',// 设置jqgrid的全局样式为bootstrap样式
     viewrecords: true,
@@ -152,23 +182,28 @@ function initExpensesGrid() {
     subGrid: false,// 是否启用子表格
     rowNum: 10, // 由Server取回10筆
     rowList: [10, 20, 30], // 每頁顯示筆數
-    colNames: ['請款日期', '請款店家'],
+    colNames: ['請款日期', '請款店家', '請款店家', '總金額'],
     colModel: [{
       name: 'billDate',
       index: 'billDate'
     }, {
       name: 'billStore',
-      index: 'billStore'
+      index: 'billStore',
+      hidden: true
+    }, {
+      name: 'billStoreF',
+      index: 'billStoreF',
+      formatter: formatBillStore
+    }, {
+      name: 'realTotalAmt',
+      index: 'realTotalAmt'
     }],
-    beforeSelectRow: function(rowid, e) // 單選
-    {
-      jQuery("#grid1").jqGrid('resetSelection');
-      return (true);
-    },
-    onSelectRow: onSelectGrid1Row
+    beforeSelectRow: onBeforeSelectGrid1Row,
+    onSelectRow: onSelectGrid1Row,
+    gridComplete: cancelCheck1Box
   }); // jqGrid
 
-  $("#grid2").jqGrid(
+  $("#" + grid2).jqGrid(
           {
             datatype: "json",
             styleUI: 'Bootstrap',// 设置jqgrid的全局样式为bootstrap样式
@@ -184,8 +219,8 @@ function initExpensesGrid() {
             subGrid: false,// 是否启用子表格
             rowNum: 10, // 由Server取回10筆
             rowList: [10, 20, 30], // 每頁顯示筆數
-            colNames: ['', '發生日期', '發生店家', '支出去向', '項目', '支出內容', '請款人', '時間',
-                '班別', '單價', '數量', '單位', '金額'],
+            colNames: ['', '發生日期', '發生店家', '支出去向', '項目', '請款單位', '請款人', '支出內容',
+                '時間', '班別', '單價', '數量', '單位', '金額'],
             colModel: [{
               name: 'index',
               index: 'index',
@@ -203,11 +238,14 @@ function initExpensesGrid() {
               name: 'accountIteam',
               index: 'accountIteam'
             }, {
-              name: 'detail',
-              index: 'detail'
+              name: 'payeeUnit',
+              index: 'payeeUnit'
             }, {
               name: 'payee',
               index: 'payee'
+            }, {
+              name: 'detail',
+              index: 'detail'
             }, {
               name: 'workTime',
               index: 'workTime'
@@ -229,31 +267,102 @@ function initExpensesGrid() {
             }],
             beforeSelectRow: function(rowid, e) // 單選
             {
-              jQuery("#grid2").jqGrid('resetSelection');
+              jQuery("#" + grid2).jqGrid('resetSelection');
               return (true);
             },
-            onSelectRow: onSelectGrid2Row
+            onSelectRow: onSelectGrid2Row,
+            gridComplete: cancelCheck2Box
           }); // jqGrid
+
+  // hide
+  cancelCheck1Box();
+  cancelCheck2Box();
+
+  $("#" + table1Grid + ", #" + table2Grid).hide();
 }
 
-function onSelectGrid1Row(id) {
-  var row = $("#grid1").jqGrid('getRowData', id)
+// format
+function formatBillStore(cellvalue, options, rowObject) {
+  var val = rowObject.billStore;
+  var name = $('#billStore option[value=' + val + ']').text();
+  return name == "" ? val : name;
+}
+
+// table control
+function controlTable1(falg) {
+  $("#billDate, #billStore").attr("disabled", falg);
+}
+
+// onSelect
+function cancelCheck1Box() {
+  $("#cb_" + grid1).hide();
+}
+function cancelCheck2Box() {
+  $("#cb_" + grid2).hide();
+}
+
+function onBeforeSelectGrid1Row(rowid, e) {
+  var chkId = $("#" + grid1).getGridParam('selrow');
+
+  if (rowid == chkId) {
+    $("#" + grid1).jqGrid('resetSelection');
+    $("#" + table1).find(":input[type=text], select").val("").change();
+    controlTable1(false);
+    return false;
+  } else {
+    $("#" + grid1).jqGrid('resetSelection');
+    $("#" + table1Grid).find(".btn-box-tool").click();
+    return true;
+  }
+}
+
+function onSelectGrid1Row(rowid) {
+
+  var row = $("#" + grid1).jqGrid('getRowData', rowid);
 
   for ( var o in row) {
-    $("#" + o).val(row[o]);
+    $("#" + o).val(row[o]).change();
   }
 
+  controlTable1(true);
+
   findDetail();
+
 }
 
 function onSelectGrid2Row(id) {
-  var row = $("#grid2").jqGrid('getRowData', id)
+
+}
+
+// button
+function openModel(type) {
+
+  $('#table2').modal("show");
+
+  var id = $("#" + grid1).getGridParam('selrow');
+
+  var row = $("#" + grid2).jqGrid('getRowData', id)
 
   for ( var o in row) {
     $("#" + o).val(row[o]);
   }
+
+  $("#saveType").val(type);
+
 }
 
+function save() {
+  var type = $("#saveType").val();
+  if (type == 1) {
+    addDetail();
+  } else if (type == 2) {
+    updateDetail();
+  } else {
+    alert("err saveType");
+  }
+}
+
+// event
 function findMain() {
   $.ajax({
     type: 'POST',
@@ -262,7 +371,8 @@ function findMain() {
     dataType: "json", // data type of response
     data: formMainToJSON(),
     success: function(json) {
-      commonUtils.autoJsonToGrid("grid1", json);
+      commonUtils.autoJsonToGrid(grid1, json);
+      $("#" + table1Grid).show();
     },
     error: function(xhr, ajaxOptions, thrownError) {
       alert(xhr.status);
@@ -279,7 +389,8 @@ function findDetail() {
     dataType: "json", // data type of response
     data: formDetailToJSON("query"),
     success: function(json) {
-      commonUtils.autoJsonToGrid("grid2", json);
+      commonUtils.autoJsonToGrid(grid2, json);
+      $("#" + table2Grid).show();
     },
     error: function(xhr, ajaxOptions, thrownError) {
       alert(xhr.status);
@@ -297,7 +408,7 @@ function addMain() {
     data: formMainToJSON(),
     success: function(json) {
       alert('add ok!');
-      commonUtils.autoJsonToGrid("grid1", json);
+      commonUtils.autoJsonToGrid(grid1, json);
     },
     error: function(jqXHR, textStatus, errorThrown) {
       alert('addExpenses error: ' + textStatus);
@@ -314,7 +425,7 @@ function addDetail() {
     data: formDetailToJSON(),
     success: function(json) {
       alert('add ok!');
-      commonUtils.autoJsonToGrid("grid2", json);
+      commonUtils.autoJsonToGrid(grid2, json);
     },
     error: function(jqXHR, textStatus, errorThrown) {
       alert('addExpenses error: ' + textStatus);
@@ -331,7 +442,7 @@ function updateDetail() {
     data: formDetailToJSON(),
     success: function(json) {
       alert('update ok!');
-      commonUtils.autoJsonToGrid("grid2", json);
+      commonUtils.autoJsonToGrid(grid2, json);
     },
     error: function(jqXHR, textStatus, errorThrown) {
       alert('addExpenses error: ' + textStatus);
@@ -348,7 +459,7 @@ function deleteDetail() {
     data: formDetailToJSON(),
     success: function(json) {
       alert('delete ok!');
-      commonUtils.autoJsonToGrid("grid2", json);
+      commonUtils.autoJsonToGrid(grid2, json);
     },
     error: function(jqXHR, textStatus, errorThrown) {
       alert('addExpenses error: ' + textStatus);
@@ -360,6 +471,7 @@ function formMainToJSON() {
   return JSON.stringify({
     "billDate": new Date($('#billDate').val()),
     "billStore": $('#billStore').val(),
+    "realTotalAmt": $('#realTotalAmt').val(),
   });
 }
 
