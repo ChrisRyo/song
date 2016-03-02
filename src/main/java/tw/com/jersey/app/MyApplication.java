@@ -1,12 +1,12 @@
 package tw.com.jersey.app;
 
-import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.mvc.MvcFeature;
 import org.glassfish.jersey.server.mvc.beanvalidation.MvcBeanValidationFeature;
 import org.glassfish.jersey.server.mvc.jsp.JspMvcFeature;
 
 import tw.com.jersey.filter.BaseRequestFilter;
+import tw.com.jersey.filter.BaseResponseFilter;
 
 public class MyApplication extends ResourceConfig {
   public MyApplication() {
@@ -16,14 +16,10 @@ public class MyApplication extends ResourceConfig {
 
     // Resources
     packages("tw.com.view.resource");
-    packages("tw.com.webservice");
 
-    // Logging.
-    register(LoggingFilter.class);
-
-    // Filter
+    // Filter.
     register(BaseRequestFilter.class);
-    register(BaseRequestFilter.class);
+    register(BaseResponseFilter.class);
 
     // MVC.
     register(MvcFeature.class);

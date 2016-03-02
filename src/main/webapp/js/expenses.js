@@ -7,33 +7,51 @@ var table2 = "table2";
 var table2Grid = "table2Grid";
 
 $(document).ready(function() {
+  
+  BootstrapDialog.show({
+    title: 'Guess who that is',
+    message: $textAndPic,
+    buttons: [{
+        label: 'Acky',
+        action: function(dialogRef){
+            dialogRef.close();
+        }
+    }, {
+        label: 'Robert',
+        action: function(dialogRef){
+            dialogRef.close();
+        }
+    }]
+});
 
-  // input style
-  $("#" + table1 + " :input[type=text]").addClass("form-control input-sm");
-  $("#" + table1 + " select").addClass("form-control");
-
-  // 取下拉選單
-  initMenu();
-
-  // select2
-  $("#table1 .select2").select2();
-
-  // TODO 為了消除死不隱藏的 aria-hidden=true
-  $("[aria-hidden=true]").hide();
-
-  // 表單驗證
-  comValidation.validationInit(condition, formId);
-
-  initExpensesGrid();
-
-  $('#table2').on('shown.bs.modal', function() {
-
-    // input style
-    $("#" + table2 + " :input[type=text]").addClass("form-control input-sm");
-    $("#" + table2 + " select").addClass("form-control");
-
-    $("#table2 .select2").select2();
-  })
+//  // input style
+//  $("#" + table1 + " :input[type=text]").addClass("form-control input-sm");
+//  $("#" + table1 + " select").addClass("form-control");
+//
+//  // 取下拉選單
+//  initMenu();
+//
+//
+//
+//  // TODO 為了消除死不隱藏的 aria-hidden=true
+//  $("[aria-hidden=true]").hide();
+//
+//  // 表單驗證
+//  comValidation.validationInit(condition, formId);
+//  
+//  // select2
+//  $("#table1 .select2").select2();
+//
+//  initExpensesGrid();
+//
+//  $('#table2').on('shown.bs.modal', function() {
+//
+//    // input style
+//    $("#" + table2 + " :input[type=text]").addClass("form-control input-sm");
+//    $("#" + table2 + " select").addClass("form-control");
+//
+//    $("#table2 .select2").select2();
+//  })
 });
 
 var condition = [{
