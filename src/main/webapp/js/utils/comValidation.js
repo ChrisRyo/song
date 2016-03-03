@@ -19,12 +19,6 @@ var comValidation = function() {
         $("#" + form + " [id=" + cond.name + "]").addClass(cond.rule);
 
       }
-
-      $("#" + form).validationEngine('attach', {
-
-      }).css({
-        border: "2px solid #000"
-      });
       
       $("#" + form).validationEngine();
     },

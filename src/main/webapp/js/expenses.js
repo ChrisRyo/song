@@ -1,60 +1,28 @@
-var formId = "expensesForm";
-var grid1 = "grid1";
-var grid2 = "grid2";
-var table1 = "table1";
-var table1Grid = "table1Grid";
-var table2 = "table2";
-var table2Grid = "table2Grid";
-
 $(document).ready(function() {
-  
-  BootstrapDialog.show({
-    title: 'Guess who that is',
-    message: $textAndPic,
-    buttons: [{
-        label: 'Acky',
-        action: function(dialogRef){
-            dialogRef.close();
-        }
-    }, {
-        label: 'Robert',
-        action: function(dialogRef){
-            dialogRef.close();
-        }
-    }]
+
+  // input style
+  $(":input[type=text]").addClass("form-control input-sm");
+  $("select").addClass("form-control");
+
+  // 取下拉選單
+  initMenu();
+
+  // TODO 為了消除死不隱藏的 aria-hidden=true
+  $("[aria-hidden=true]").hide();
+
+  // select2
+  $(".select2").select2({
+    width: '100%'
+  });
+
+  initExpensesGrid();
+
+  // 表單驗證
+  comValidation.validationInit(condition1, "form1");
+  comValidation.validationInit(condition2, "form2");
 });
 
-//  // input style
-//  $("#" + table1 + " :input[type=text]").addClass("form-control input-sm");
-//  $("#" + table1 + " select").addClass("form-control");
-//
-//  // 取下拉選單
-//  initMenu();
-//
-//
-//
-//  // TODO 為了消除死不隱藏的 aria-hidden=true
-//  $("[aria-hidden=true]").hide();
-//
-//  // 表單驗證
-//  comValidation.validationInit(condition, formId);
-//  
-//  // select2
-//  $("#table1 .select2").select2();
-//
-//  initExpensesGrid();
-//
-//  $('#table2').on('shown.bs.modal', function() {
-//
-//    // input style
-//    $("#" + table2 + " :input[type=text]").addClass("form-control input-sm");
-//    $("#" + table2 + " select").addClass("form-control");
-//
-//    $("#table2 .select2").select2();
-//  })
-});
-
-var condition = [{
+var condition1 = [{
   name: "billDate",
   rule: "validate[custom[date]]"
 }, {
@@ -63,7 +31,9 @@ var condition = [{
 }, {
   name: "realTotalAmt",
   rule: "validate[custom[number]], max[999999999999999]"
-}, {
+}];
+
+var condition2 = [{
   name: "realDate",
   rule: "validate[custom[date]]"
 }, {
@@ -185,7 +155,7 @@ function initMenu() {
 
 function initExpensesGrid() {
 
-  $("#" + grid1).jqGrid({
+  $("#grid1").jqGrid({
     datatype: "json",
     styleUI: 'Bootstrap',// 设置jqgrid的全局样式为bootstrap样式
     viewrecords: true,
@@ -221,7 +191,7 @@ function initExpensesGrid() {
     gridComplete: cancelCheck1Box
   }); // jqGrid
 
-  $("#" + grid2).jqGrid(
+  $("#grid2").jqGrid(
           {
             datatype: "json",
             styleUI: 'Bootstrap',// 设置jqgrid的全局样式为bootstrap样式
@@ -296,7 +266,7 @@ function initExpensesGrid() {
   cancelCheck1Box();
   cancelCheck2Box();
 
-  $("#" + table1Grid + ", #" + table2Grid).hide();
+  $("#table1Grid, #table2Grid").hide();
 }
 
 // format
@@ -313,30 +283,30 @@ function controlTable1(falg) {
 
 // onSelect
 function cancelCheck1Box() {
-  $("#cb_" + grid1).hide();
+  $("#cb_grid1").hide();
 }
 function cancelCheck2Box() {
-  $("#cb_" + grid2).hide();
+  $("#cb_grid2").hide();
 }
 
 function onBeforeSelectGrid1Row(rowid, e) {
-  var chkId = $("#" + grid1).getGridParam('selrow');
+  var chkId = $("#grid1").getGridParam('selrow');
 
   if (rowid == chkId) {
-    $("#" + grid1).jqGrid('resetSelection');
-    $("#" + table1).find(":input[type=text], select").val("").change();
+    $("#grid1").jqGrid('resetSelection');
+    $("#table1").find(":input[type=text], select").val("").change();
     controlTable1(false);
     return false;
   } else {
-    $("#" + grid1).jqGrid('resetSelection');
-    $("#" + table1Grid).find(".btn-box-tool").click();
+    $("#grid1").jqGrid('resetSelection');
+    $("#table1Grid").find(".btn-box-tool").click();
     return true;
   }
 }
 
 function onSelectGrid1Row(rowid) {
 
-  var row = $("#" + grid1).jqGrid('getRowData', rowid);
+  var row = $("#grid1").jqGrid('getRowData', rowid);
 
   for ( var o in row) {
     $("#" + o).val(row[o]).change();
@@ -357,9 +327,9 @@ function openModel(type) {
 
   $('#table2').modal("show");
 
-  var id = $("#" + grid1).getGridParam('selrow');
+  var id = $("#grid2").getGridParam('selrow');
 
-  var row = $("#" + grid2).jqGrid('getRowData', id)
+  var row = $("#grid2").jqGrid('getRowData', id)
 
   for ( var o in row) {
     $("#" + o).val(row[o]);
@@ -389,8 +359,8 @@ function findMain() {
     dataType: "json", // data type of response
     data: formMainToJSON(),
     success: function(json) {
-      commonUtils.autoJsonToGrid(grid1, json);
-      $("#" + table1Grid).show();
+      commonUtils.autoJsonToGrid("grid1", json);
+      $("#table1Grid").show();
     },
     error: function(xhr, ajaxOptions, thrownError) {
       alert(xhr.status);
@@ -407,8 +377,8 @@ function findDetail() {
     dataType: "json", // data type of response
     data: formDetailToJSON("query"),
     success: function(json) {
-      commonUtils.autoJsonToGrid(grid2, json);
-      $("#" + table2Grid).show();
+      commonUtils.autoJsonToGrid("grid2", json);
+      $("#table2Grid").show();
     },
     error: function(xhr, ajaxOptions, thrownError) {
       alert(xhr.status);

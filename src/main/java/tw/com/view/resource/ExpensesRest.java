@@ -32,7 +32,7 @@ public class ExpensesRest {
 
   @GET
   public Viewable init() {
-    return new Viewable("/expenses");
+    return new Viewable("/expenses/expenses_init");
   }
 
   /**

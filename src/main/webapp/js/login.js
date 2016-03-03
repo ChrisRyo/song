@@ -2,11 +2,10 @@ function login() {
   $.ajax({
     type: 'POST',
     contentType: 'application/json',
-    url: "/song/login/check",
-    dataType: "json", // data type of response
+    url: location.href,
     data: formToJSON(),
     success: function(json) {
-
+      document.location.href= location.origin + json;
     },
     error: function(xhr, ajaxOptions, thrownError) {
       alert(xhr.status);

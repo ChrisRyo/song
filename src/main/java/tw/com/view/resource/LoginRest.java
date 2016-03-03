@@ -34,14 +34,19 @@ public class LoginRest {
    * @throws Exception
    */
   @POST
-  @Path("check")
-  public void login(User user, @Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
+  public String login(User user, @Context HttpServletRequest request,
+      @Context HttpServletResponse response) throws Exception {
     if (!user.getAccount().equals("lin") || !user.getPassword().equals("qwer8888")) {
       throw new Exception("帳號或密碼錯誤！");
     }
-    
-    request.setAttribute(User.USER_SESSION, user);
-    response.sendRedirect("expenses");
+
+    request.getSession().setAttribute(User.USER_SESSION, user);
+
+    return request.getContextPath() + "/expenses";
+
+    // URI uri = URI.create(request.getContextPath() + "/sample");
+    //
+    // return Response.seeOther(uri).build();
   }
 
 }

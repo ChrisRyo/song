@@ -28,7 +28,7 @@ public class BaseRequestFilter implements ContainerRequestFilter {
 
     if (!path.startsWith("login")) {
 
-      User user = (User) request.getAttribute(User.USER_SESSION);
+      User user = (User) request.getSession().getAttribute(User.USER_SESSION);
 
       if (user == null) {
         requestCtx.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());

@@ -32,10 +32,10 @@ public class BaseResponseFilter implements ContainerResponseFilter {
       return;
     }
 
-    // Google Json
-    if (arg1.getMediaType() != null
-        && MediaType.APPLICATION_JSON.equals(arg1.getMediaType().toString())) {
-      arg1.setEntity(new Gson().toJson(arg1.getEntity()));
-    }
+//    // Google Json
+//    if (arg1.getMediaType() != null
+//        && MediaType.APPLICATION_JSON.equals(arg1.getMediaType().toString())) {
+//      arg1.setEntity(new Gson().toJson(arg1.getEntity()));
+//    }
   }
 }

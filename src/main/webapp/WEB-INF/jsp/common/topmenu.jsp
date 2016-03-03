@@ -35,7 +35,7 @@
         </a>
 
         <!-- Header Navbar -->
-        <nav class="navbar navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-fixed" role="navigation">
           <!-- Sidebar toggle button-->
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>

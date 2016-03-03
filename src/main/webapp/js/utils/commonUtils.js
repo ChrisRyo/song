@@ -17,7 +17,7 @@ var commonUtils = function() {
      */
     autoJsonToGrid: function(gridId, json) {
 
-      $("#" + gridId).jqGrid("clearGridData", true).trigger("reloadGrid");
+      $("#" + gridId).jqGrid("clearGridData", true);
       for ( var i in json) {
         if (json[i]["id"] != null) {
           for ( var o in json[i]["id"]) {
