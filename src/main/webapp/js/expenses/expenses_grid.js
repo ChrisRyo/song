@@ -6,7 +6,7 @@ var expensesGrid = function() {
 
     initExpensesGrid: function() {
 
-      $("#"+grid1).jqGrid({
+      $("#"+_grid1).jqGrid({
         datatype: "json",
         styleUI: 'Bootstrap',// 设置jqgrid的全局样式为bootstrap样式
         viewrecords: true,
@@ -42,7 +42,7 @@ var expensesGrid = function() {
         gridComplete: this.cancelCheck1Box
       }); // jqGrid
 
-      $("#"+grid2).jqGrid(
+      $("#"+_grid2).jqGrid(
               {
                 datatype: "json",
                 styleUI: 'Bootstrap',// 设置jqgrid的全局样式为bootstrap样式
@@ -69,7 +69,8 @@ var expensesGrid = function() {
                   index: 'realDate'
                 }, {
                   name: 'realStore',
-                  index: 'realStore'
+                  index: 'realStore',
+                  formatter: this.formatRealStore
                 }, {
                   name: 'source',
                   index: 'source'
@@ -106,7 +107,7 @@ var expensesGrid = function() {
                 }],
                 beforeSelectRow: function(rowid, e) // 單選
                 {
-                  jQuery("#" + grid2).jqGrid('resetSelection');
+                  jQuery("#" + _grid2).jqGrid('resetSelection');
                   return (true);
                 },
                 onSelectRow: this.onSelectGrid2Row
@@ -119,6 +120,12 @@ var expensesGrid = function() {
     },
 
     // format
+    formatRealStore: function(cellvalue, options, rowObject) {
+      var val = rowObject.billStore;
+      var name = $('#realStore option[value=' + val + ']').text();
+      return name == "" ? val : name;
+    },
+    
     formatBillStore: function(cellvalue, options, rowObject) {
       var val = rowObject.billStore;
       var name = $('#billStore option[value=' + val + ']').text();
@@ -127,24 +134,25 @@ var expensesGrid = function() {
 
     // onSelect
     cancelCheck1Box: function() {
-      $("#cb_"+grid1).hide();
+      $("#cb_"+_grid1).hide();
     },
 
     onBeforeSelectGrid1Row: function(rowid, e) {
-      var chkId = $("#"+grid1).getGridParam('selrow');
+      var chkId = $("#"+_grid1).getGridParam('selrow');
 
       if (rowid == chkId) {
-        $("#"+grid1).jqGrid('resetSelection');
-        $("#"+grid2).jqGrid('resetSelection');
+        $("#"+_grid1).jqGrid('resetSelection');
+        $("#"+_grid2).jqGrid('resetSelection');
         $("#table1").find(":input[type=text], select").val("").change();
         // hide
         expensesGrid.cancelCheck1Box();
 
         $("#table1Grid, #table2Grid").hide();
         expensesGrid.controlTable1(false);
+        _tmpAmt = 0;
         return false;
       } else {
-        $("#"+grid1).jqGrid('resetSelection');
+        $("#"+_grid1).jqGrid('resetSelection');
         $("#table1Grid").find(".btn-box-tool").click();
         return true;
       }
@@ -152,11 +160,13 @@ var expensesGrid = function() {
 
     onSelectGrid1Row: function(rowid) {
 
-      var row = $("#"+grid1).jqGrid('getRowData', rowid);
+      var row = $("#"+_grid1).jqGrid('getRowData', rowid);
 
       for ( var o in row) {
         $("#" + o).val(row[o]).change();
       }
+      
+      _tmpAmt = row.realTotalAmt;
 
       expensesGrid.controlTable1(true);
 
@@ -174,6 +184,9 @@ var expensesGrid = function() {
       
       if (!falg) {
         $("#realTotalAmtChk").text("");
+        $("#addMain").show();
+      } else {
+        $("#addMain").hide();
       }
     },
   }

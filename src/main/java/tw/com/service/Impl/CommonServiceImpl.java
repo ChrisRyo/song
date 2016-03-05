@@ -138,7 +138,9 @@ public class CommonServiceImpl implements CommonService {
       em.merge(entity);
       transaction.commit();
     } catch (Exception e) {
-      transaction.rollback();
+      if (transaction.isActive()) {
+        transaction.rollback();
+      }
       throw new Exception(e);
     }
   }

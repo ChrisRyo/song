@@ -1,7 +1,8 @@
-var form1 = "form1";
-var form2 = "form2";
-var grid1 = "grid1";
-var grid2 = "grid2";
+var _form1 = "form1";
+var _form2 = "form2";
+var _grid1 = "grid1";
+var _grid2 = "grid2";
+var _tmpAmt;
 
 $(document).ready(function() {
 
@@ -19,7 +20,7 @@ $(document).ready(function() {
   $("#billStore, #realStore, #payeeUnit").select2({
     width: '100%'
   });
-  
+
   // Datepicker
   $('#billDate, #realDate').datepicker({
     language: "zh-TW",
@@ -30,18 +31,24 @@ $(document).ready(function() {
   expensesGrid.initExpensesGrid();
 
   // 表單驗證
-  comValidation.validationInit(expensesValid.condition1(), form1);
-  comValidation.validationInit(expensesValid.condition2(), form2);
-  
+  comValidation.validationInit(expensesValid.condition1(), _form1);
+  comValidation.validationInit(expensesValid.condition2(), _form2);
+
   // event
-  $("#realTotalAmt").change(function(){
+  $("#realTotalAmt").change(function() {
     expenses.totalAmtFormat($(this).val(), $("#realTotalAmtChk").text());
+  }).blur(function() {
+    if (_tmpAmt != $(this).val()) {
+      $("#realTotalAmtUpdate").show();
+    } else {
+      $("#realTotalAmtUpdate").hide();
+    }
   });
-  
-  $("#price, #quantity").change(function(){
-    $("#amt").val($("#price").val()*$("#quantity").val());
+
+  $("#price, #quantity").change(function() {
+    $("#amt").val($("#price").val() * $("#quantity").val());
   });
-  
+
 });
 
 /**
@@ -111,9 +118,9 @@ var expenses = function() {
         width: "100%",
         placeholder: "請款人",
       });
-      
+
       // event
-      $("#payeeUnit").change(function(){
+      $("#payeeUnit").change(function() {
         $("#payee option[value!='']").remove();
         $("#payee").val('').change();
       });
@@ -121,12 +128,18 @@ var expenses = function() {
 
     // button
     openModel: function(type) {
+      
+      if (type == 1) {
+        $("#saveDetail").val("新增");
+      } else {
+        $("#saveDetail").val("修改");
+      }
 
       $('#table2').modal("show");
 
-      var id = $("#" + grid2).getGridParam('selrow');
+      var id = $("#" + _grid2).getGridParam('selrow');
 
-      var row = $("#" + grid2).jqGrid('getRowData', id)
+      var row = $("#" + _grid2).jqGrid('getRowData', id)
 
       for ( var o in row) {
         $("#" + o).val(row[o]);
@@ -156,7 +169,7 @@ var expenses = function() {
         dataType: "json", // data type of response
         data: this.formMainToJSON(),
         success: function(json) {
-          commonUtils.autoJsonToGrid(grid1, json.data);
+          commonUtils.autoJsonToGrid(_grid1, json.data);
           $("#table1Grid").show();
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -174,7 +187,7 @@ var expenses = function() {
         dataType: "json", // data type of response
         data: this.formDetailToJSON("query"),
         success: function(json) {
-          commonUtils.autoJsonToGrid(grid2, json.data);
+          commonUtils.autoJsonToGrid(_grid2, json.data);
           expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
           $("#table2Grid").show();
         },
@@ -193,8 +206,10 @@ var expenses = function() {
         dataType: "json",
         data: this.formMainToJSON(),
         success: function(json) {
-          alert('add ok!');
-          commonUtils.autoJsonToGrid(grid1, json.data);
+          BootstrapDialog.show({
+            message:'新增成功！'
+          });
+          commonUtils.autoJsonToGrid(_grid1, json.data);
         },
         error: function(jqXHR, textStatus, errorThrown) {
           alert('addExpenses error: ' + textStatus);
@@ -210,9 +225,33 @@ var expenses = function() {
         dataType: "json",
         data: this.formDetailToJSON(),
         success: function(json) {
-          alert('add ok!');
-          commonUtils.autoJsonToGrid(grid2, json.data);
+          BootstrapDialog.show({
+            message:'新增成功！'
+          });
+          commonUtils.autoJsonToGrid(_grid2, json.data);
           expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('addExpenses error: ' + textStatus);
+        }
+      });
+    },
+    
+    updateMain: function() {
+      $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+        url: _path + "/expenses/updateMain",
+        dataType: "json",
+        data: this.formMainToJSON(),
+        success: function(json) {
+          BootstrapDialog.show({
+            message:'更新成功！'
+          });
+          _tmpAmt = $("#realTotalAmt");
+          $("#realTotalAmtUpdate").hide();
+          commonUtils.autoJsonToGrid(_grid1, json.data);
+          $("#table1Grid").show();
         },
         error: function(jqXHR, textStatus, errorThrown) {
           alert('addExpenses error: ' + textStatus);
@@ -228,8 +267,10 @@ var expenses = function() {
         dataType: "json",
         data: this.formDetailToJSON(),
         success: function(json) {
-          alert('update ok!');
-          commonUtils.autoJsonToGrid(grid2, json.data);
+          BootstrapDialog.show({
+            message:'更新成功！'
+          });
+          commonUtils.autoJsonToGrid(_grid2, json.data);
           expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -247,7 +288,7 @@ var expenses = function() {
         data: this.formDetailToJSON(),
         success: function(json) {
           alert('delete ok!');
-          commonUtils.autoJsonToGrid(grid2, json.data);
+          commonUtils.autoJsonToGrid(_grid2, json.data);
           expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -271,7 +312,7 @@ var expenses = function() {
       }); }
 
       return JSON.stringify({
-        "index": $("#index").val(),
+        "seq": $("#seq").val(),
         "billDate": new Date($('#billDate').val()),
         "realDate": new Date($('#realDate').val()),
         "billStore": $('#billStore').val(),
@@ -289,13 +330,14 @@ var expenses = function() {
         "amt": $('#amt').val()
       });
     },
+    
     totalAmtFormat: function(realTotalAmt, chkTotalAmt) {
       if (realTotalAmt != chkTotalAmt) {
         $("#realTotalAmtChk").removeClass("bg-green").addClass("bg-red").text(chkTotalAmt);
-      }else {
+      } else {
         $("#realTotalAmtChk").removeClass("bg-red").addClass("bg-green").text(chkTotalAmt);
       }
-      
+
     }
   }
 }();

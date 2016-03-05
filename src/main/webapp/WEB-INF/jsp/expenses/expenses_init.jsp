@@ -64,12 +64,11 @@
 									</div>
 								</div>
 								<div class="col-md-2 ">
-									<label>總金額
-										<i id="realTotalAmtChk" class="pull-right badge"></i>
-										<input type="button" class="btn btn-xs btn-warning" value="存檔" onclick="expenses.updateMain();" aria-hidden="true">
+									<label>總金額 <i id="realTotalAmtChk" class="pull-right badge"></i>
 									</label>
 									<div>
-										<input type="text" id="realTotalAmt">
+										<input type="text" id="realTotalAmt"> <input type="button" id="realTotalAmtUpdate" class="btn btn-xs btn-warning" value="金額存檔"
+											onclick="expenses.updateMain();" aria-hidden="true">
 									</div>
 								</div>
 							</div>
@@ -77,7 +76,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<input class="btn btn-success btn-sm" type="button" value="查詢" onclick="expenses.findMain();" /> <input class="btn btn-primary btn-sm"
-									type="button" value="新增" onclick="expenses.addMain();" />
+									type="button" id="addMain" value="新增" onclick="expenses.addMain();" />
 							</div>
 						</div>
 
@@ -122,8 +121,8 @@
 							<!-- 內容 end -->
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-primary" onclick="expenses.save();">確認</button>
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="取消">
+							<input type="button" id="saveDetail"class="btn btn-primary" value="確認"onclick="expenses.save();">
 						</div>
 					</div>
 				</div>

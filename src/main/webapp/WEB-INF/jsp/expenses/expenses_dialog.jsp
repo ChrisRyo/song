@@ -2,7 +2,7 @@
 
 <div>
 	<form class="form-horizontal" id="form2">
-		<input type="hidden" id="saveType"> <input type="hidden" id="index">
+		<input type="hidden" id="saveType"> <input type="hidden" id="seq">
 		<div class="form-group">
 			<label class="col-sm-2 control-label">發生日期</label>
 			<div class="col-sm-4 controls">

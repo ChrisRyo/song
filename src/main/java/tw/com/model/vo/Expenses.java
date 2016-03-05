@@ -27,7 +27,7 @@ public class Expenses implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer index;
+  private Integer seq;
 
   @Column(name="account_iteam")
   private String accountIteam;

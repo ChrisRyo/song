@@ -98,7 +98,7 @@ public class ExpensesRest extends BaseRest {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public ReturnMessage add(Expenses expenses) throws Exception {
-    expenses.setIndex(null);
+    expenses.setSeq(null);
     service.insertByEntity(expenses);
     return this.getDetailData(expenses);
   }
@@ -133,23 +133,6 @@ public class ExpensesRest extends BaseRest {
   public ReturnMessage updateDetail(Expenses expenses) throws Exception {
     service.updateByEntity(expenses);
     return this.getDetailData(expenses);
-  }
-
-  /**
-   * 刪除主檔資料
-   * 
-   * @param expenses
-   * @return
-   * @throws Exception
-   */
-
-  @POST
-  @Path("removeMain")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public ReturnMessage removeMain(ExpensesMain expensesMain) throws Exception {
-    service.deleteByEntity(expensesMain);
-    return this.getMainData(expensesMain);
   }
 
   /**
