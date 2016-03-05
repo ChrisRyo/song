@@ -3,6 +3,8 @@ package tw.com.logic.enums.temp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import tw.com.model.dto.Menu;
 
 /**
@@ -34,7 +36,7 @@ public enum CompanyEnum {
     CompanyEnum[] enums = CompanyEnum.values();
 
     for (CompanyEnum e : enums) {
-      if (e.name().indexOf(name) > 0) {
+      if (StringUtils.isEmpty(name) || e.name().indexOf(name) > -1) {
         list.add(new Menu(e.getIndex(), e.name()));
       }
     }

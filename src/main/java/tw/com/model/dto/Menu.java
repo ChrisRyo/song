@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Menu {
-  private int key;
-  private String value;
+  private int id;
+  private String text;
 }

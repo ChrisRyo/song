@@ -9,6 +9,14 @@ import java.util.List;
  *
  */
 public interface CommonService {
+  
+  /**
+   * 
+   * @param sql
+   * @return
+   * @throws Exception
+   */
+  public Object queryBySql(String sql) throws Exception;
 
   /**
    * 取得所有資料
@@ -27,6 +35,15 @@ public interface CommonService {
    * @throws Exception
    */
   public List<?> queryByEntity(Object entity) throws Exception;
+  
+  /**
+   * 查詢總筆數 by entity
+   * 
+   * @param entity
+   * @return count
+   * @throws Exception
+   */
+  public int queryCountBySql(Object entity) throws Exception;
 
   /**
    * 查詢 by entity where begin and end

@@ -1,6 +1,5 @@
 package tw.com.logic.enums.temp;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,29 +46,29 @@ public enum PayeeUnitEnum {
     return list;
   }
   
-  /**
-   * 
-   * @return
-   */
-  @SuppressWarnings("unchecked")
-  public static List<Menu> getDetailMenu(int unit, String name) {
-
-    List<Menu> list = new ArrayList<Menu>();
-
-    PayeeUnitEnum[] enums = PayeeUnitEnum.values();
-
-    for (PayeeUnitEnum en : enums) {
-      if (en.getIndex() == unit) {
-        try {
-          Method method = en.getEnums().getMethod("getMenu", new Class[0]);
-          list = (List<Menu>) method.invoke(en, name);
-        } catch (Exception e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-      }
-    }
-
-    return list;
-  }
+//  /**
+//   * 
+//   * @return
+//   */
+//  @SuppressWarnings("unchecked")
+//  public static List<Menu> getDetailMenu(int unit, String name) {
+//
+//    List<Menu> list = new ArrayList<Menu>();
+//
+//    PayeeUnitEnum[] enums = PayeeUnitEnum.values();
+//
+//    for (PayeeUnitEnum en : enums) {
+//      if (en.getIndex() == unit) {
+//        try {
+//          Method method = en.getEnums().getMethod("getMenu", new  Class[]{String.class});
+//          list = (List<Menu>) method.invoke(en.getEnums(), name);
+//        } catch (Exception e) {
+//          // TODO Auto-generated catch block
+//          e.printStackTrace();
+//        }
+//      }
+//    }
+//
+//    return list;
+//  }
 }

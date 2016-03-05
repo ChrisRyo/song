@@ -2,10 +2,16 @@
 
 <div>
 	<form class="form-horizontal" id="form2">
+		<input type="hidden" id="saveType"> <input type="hidden" id="index">
 		<div class="form-group">
 			<label class="col-sm-2 control-label">發生日期</label>
 			<div class="col-sm-4 controls">
-				<input type="hidden" id="saveType"> <input type="hidden" id="index"> <input type="text" id="realDate" placeholder="YYYY-MM-DD">
+				<div class="input-group">
+					<input type="text" id="realDate" placeholder="YYYY-MM-DD">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
 			</div>
 			<label class="col-sm-2 control-label">發生店家</label>
 			<div class="col-sm-4 controls">
@@ -31,7 +37,7 @@
 			</div>
 			<label class="col-sm-2 control-label">請款人</label>
 			<div class="col-sm-4 controls">
-				<select id="payee" class="select2"><option value="">請選擇</option></select>
+				<select id="payee" class="select2 js-data-example-ajax select2"><option value="">請選擇</option></select>
 			</div>
 		</div>
 		<div class="form-group">
@@ -67,7 +73,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">金額</label>
 			<div class="col-sm-4 controls">
-				<input type="text" id="amt" placeholder="金額">
+				<input type="text" id="amt" placeholder="金額" disabled>
 			</div>
 			<label class="col-sm-2 control-label">備註</label>
 			<div class="col-sm-4 controls">

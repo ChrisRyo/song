@@ -27,6 +27,17 @@ public class CommonServiceImpl implements CommonService {
   private final int MAX_COUNT = 10000;
 
   /**
+   * 
+   * @param sql
+   * @return
+   * @throws Exception
+   */
+  public Object queryBySql(String sql) throws Exception {
+    Query query = em.createQuery(sql).setMaxResults(MAX_COUNT);
+    return query.getResultList();
+  }
+
+  /**
    * 取得所有資料
    * 
    * @param entity
@@ -58,6 +69,22 @@ public class CommonServiceImpl implements CommonService {
     Query query = em.createQuery(sql).setMaxResults(MAX_COUNT);
     list = (List<?>) query.getResultList();
     return list;
+  }
+
+  /**
+   * 查詢總筆數 by entity
+   * 
+   * @param entity
+   * @return count
+   * @throws Exception
+   */
+  public int queryCountBySql(Object entity) throws Exception {
+
+    String sql = EntityUtils.getQueryCountSql(entity);
+
+    Query query = em.createQuery(sql);
+
+    return ((Long) query.getSingleResult()).intValue();
   }
 
   /**

@@ -1,5 +1,7 @@
 package tw.com.view.resource;
 
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,9 +14,14 @@ import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
+import tw.com.logic.enums.DateStyle;
+import tw.com.logic.utils.DateUtils;
+import tw.com.logic.utils.PropertiesUtils;
 import tw.com.model.vo.Expenses;
 import tw.com.model.vo.ExpensesMain;
 import tw.com.service.CommonService;
+import tw.com.view.message.ReturnMessage;
+import tw.com.view.message.code.ValidCode;
 
 
 /**
@@ -25,14 +32,14 @@ import tw.com.service.CommonService;
  *
  */
 @Path("/expenses")
-public class ExpensesRest {
+public class ExpensesRest extends BaseRest {
 
   @Inject
   private CommonService service;
 
   @GET
   public Viewable init() {
-    return new Viewable("/expenses/expenses_init");
+    return new Viewable("/expenses/expenses_init", super.getModelAndView());
   }
 
   /**
@@ -45,7 +52,7 @@ public class ExpensesRest {
   @Path("queryMain")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<ExpensesMain> getMainExpenses(ExpensesMain entity) throws Exception {
+  public ReturnMessage getMainExpenses(ExpensesMain entity) throws Exception {
     return this.getMainData(entity);
   }
 
@@ -59,7 +66,7 @@ public class ExpensesRest {
   @Path("queryDetail")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Expenses> getAllExpenses(Expenses expenses) throws Exception {
+  public ReturnMessage getAllExpenses(Expenses expenses) throws Exception {
     return this.getDetailData(expenses);
   }
 
@@ -74,7 +81,7 @@ public class ExpensesRest {
   @Path("addMain")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<ExpensesMain> addMain(ExpensesMain expensesMain) throws Exception {
+  public ReturnMessage addMain(ExpensesMain expensesMain) throws Exception {
     service.insertByEntity(expensesMain);
     return this.getMainData(expensesMain);
   }
@@ -90,7 +97,8 @@ public class ExpensesRest {
   @Path("addDetail")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Expenses> add(Expenses expenses) throws Exception {
+  public ReturnMessage add(Expenses expenses) throws Exception {
+    expenses.setIndex(null);
     service.insertByEntity(expenses);
     return this.getDetailData(expenses);
   }
@@ -106,7 +114,7 @@ public class ExpensesRest {
   @Path("updateMain")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<ExpensesMain> updateMain(ExpensesMain expensesMain) throws Exception {
+  public ReturnMessage updateMain(ExpensesMain expensesMain) throws Exception {
     service.updateByEntity(expensesMain);
     return this.getMainData(expensesMain);
   }
@@ -122,7 +130,7 @@ public class ExpensesRest {
   @Path("updateDetail")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Expenses> updateDetail(Expenses expenses) throws Exception {
+  public ReturnMessage updateDetail(Expenses expenses) throws Exception {
     service.updateByEntity(expenses);
     return this.getDetailData(expenses);
   }
@@ -139,7 +147,7 @@ public class ExpensesRest {
   @Path("removeMain")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<ExpensesMain> removeMain(ExpensesMain expensesMain) throws Exception {
+  public ReturnMessage removeMain(ExpensesMain expensesMain) throws Exception {
     service.deleteByEntity(expensesMain);
     return this.getMainData(expensesMain);
   }
@@ -155,7 +163,7 @@ public class ExpensesRest {
   @Path("removeDetail")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Expenses> remove(Expenses expenses) throws Exception {
+  public ReturnMessage remove(Expenses expenses) throws Exception {
     service.deleteByEntity(expenses);
     return this.getDetailData(expenses);
   }
@@ -167,8 +175,10 @@ public class ExpensesRest {
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
-  private List<ExpensesMain> getMainData(ExpensesMain expensesMain) throws Exception {
-    return (List<ExpensesMain>) service.queryByEntity(expensesMain);
+  private ReturnMessage getMainData(ExpensesMain entity) throws Exception {
+
+    List<ExpensesMain> list = (List<ExpensesMain>) service.queryByEntity(entity);
+    return new ReturnMessage(true, ValidCode.SUCCESS.getCode(), list, list.size());
   }
 
   /**
@@ -178,17 +188,33 @@ public class ExpensesRest {
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
-  private List<Expenses> getDetailData(Expenses expenses) throws Exception {
-    
-    if (expenses.getBillDate() == null || expenses.getBillStore() == null) {
+  private ReturnMessage getDetailData(Expenses entity) throws Exception {
+
+    if (entity.getBillDate() == null || entity.getBillStore() == null) {
       throw new Exception("缺少查詢條件");
     }
-    
+
     Expenses queryDto = new Expenses();
-    queryDto.setBillDate(expenses.getBillDate());
-    queryDto.setBillStore(expenses.getBillStore());
-    
-    return (List<Expenses>) service.queryByEntity(queryDto);
+    queryDto.setBillDate(entity.getBillDate());
+    queryDto.setBillStore(entity.getBillStore());
+
+    List<Expenses> list = (List<Expenses>) service.queryByEntity(queryDto);
+
+    // tottalAmt
+    String date = DateUtils.dateFormat(entity.getBillDate(), DateStyle.YYYY_MM_DD);
+    String billDate = "STR_TO_DATE('" + date + "','" + DateStyle.YYYY_MM_DD.getSql() + "')";
+
+    Object obj =
+        service.queryBySql(this.getSql(billDate, entity.getBillStore()));
+
+    return new ReturnMessage(true, ValidCode.SUCCESS.getCode(), list, list.size(), obj);
+  }
+
+  private String getSql(Object... val) {
+    String sql =
+        "SELECT sum(e.amt) as totalAmt FROM Expenses e where e.billDate = {0} AND e.billStore = {1}";
+
+    return MessageFormat.format(sql, val);
   }
 
 }

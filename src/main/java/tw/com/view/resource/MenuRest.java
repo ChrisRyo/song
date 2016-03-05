@@ -9,7 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import tw.com.logic.enums.temp.CompanyEnum;
+import tw.com.logic.enums.temp.GovernmentEnum;
 import tw.com.logic.enums.temp.PayeeUnitEnum;
+import tw.com.logic.enums.temp.PlayerEnum;
 import tw.com.logic.enums.temp.StoreEnum;
 import tw.com.model.dto.Menu;
 
@@ -47,10 +50,16 @@ public class MenuRest {
   @Produces(MediaType.APPLICATION_JSON)
   public List<Menu> queryPayee(@QueryParam("unit") int unit, @QueryParam("name") String name)
       throws Exception {
-
-    if (unit != 1 && unit != 2 && unit != 3) {
-      return new ArrayList<Menu>();
+    
+    switch (unit) {
+      case 1:
+        return PlayerEnum.getMenu(name);
+      case 2:
+        return CompanyEnum.getMenu(name);
+      case 3:
+        return GovernmentEnum.getMenu(name);
+      default:
+        return new ArrayList<Menu>();
     }
-    return PayeeUnitEnum.getDetailMenu(unit, name);
   }
 }

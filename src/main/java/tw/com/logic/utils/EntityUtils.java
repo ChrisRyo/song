@@ -27,21 +27,35 @@ public class EntityUtils {
    * @throws Exception
    */
   public static String getQueryEntitySql(Object entity) throws Exception {
-    return getSql(entity);
+    String type = "c";
+    return getSql(entity, type);
+  }
+
+  /**
+   * 查詢總筆數
+   * 
+   * @param entity
+   * @return
+   * @throws Exception
+   */
+  public static String getQueryCountSql(Object entity) throws Exception {
+    String type = "count(c)";
+    return getSql(entity, type);
   }
 
   /**
    * 所有欄位都使用模糊查詢
    * 
    * @param entity
+   * @param type
    * @return
    * @throws Exception
    */
-  private static String getSql(Object entity) throws Exception {
+  private static String getSql(Object entity, String type) throws Exception {
 
     // getValue (select c : jpa select all 語法)
     StringBuffer sb =
-        new StringBuffer("SELECT c FROM " + entity.getClass().getSimpleName() + " c ");
+        new StringBuffer("SELECT " + type + " FROM " + entity.getClass().getSimpleName() + " c ");
 
 
     StringBuffer whereSb = new StringBuffer();

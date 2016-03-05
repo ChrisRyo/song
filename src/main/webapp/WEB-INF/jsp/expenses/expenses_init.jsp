@@ -8,8 +8,11 @@
 <!-- Select2 -->
 <link rel="stylesheet" href="plugins/almsaeed/plugins/select2/select2.min.css">
 
+<!-- Bootstrap time Picker -->
+<link rel="stylesheet" href="plugins/almsaeed/plugins/datepicker/datepicker3.css">
+
 <!-- dialog -->
-<link rel="stylesheet" href="plugins/bootstrap/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="plugins/bootstrap-dialog/css/bootstrap-dialog.min.css">
 </head>
 <jsp:include page="../common/topmenu.jsp" />
 
@@ -45,8 +48,11 @@
 							<div class="row">
 								<div class="col-md-2">
 									<label>請款日期</label>
-									<div>
+									<div class="input-group">
 										<input type="text" id="billDate" placeholder="YYYY-MM-DD">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
 									</div>
 								</div>
 								<div class="col-md-2">
@@ -58,7 +64,10 @@
 									</div>
 								</div>
 								<div class="col-md-2 ">
-									<label>總金額<span id="realTotalAmtChk" class="pull-right badge">bg-green</span></label>
+									<label>總金額
+										<i id="realTotalAmtChk" class="pull-right badge"></i>
+										<input type="button" class="btn btn-xs btn-warning" value="存檔" onclick="expenses.updateMain();" aria-hidden="true">
+									</label>
 									<div>
 										<input type="text" id="realTotalAmt">
 									</div>
@@ -67,8 +76,8 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<input class="btn btn-success btn-sm" type="button" value="查詢" onclick="findMain();" /> <input class="btn btn-primary btn-sm" type="button"
-									value="新增" onclick="addMain();" /> <input class="btn btn-warning btn-sm" type="button" value="修改金額" onclick="updateTotalAmt();" />
+								<input class="btn btn-success btn-sm" type="button" value="查詢" onclick="expenses.findMain();" /> <input class="btn btn-primary btn-sm"
+									type="button" value="新增" onclick="expenses.addMain();" />
 							</div>
 						</div>
 
@@ -114,7 +123,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-primary" onclick="save();">確認</button>
+							<button type="button" class="btn btn-primary" onclick="expenses.save();">確認</button>
 						</div>
 					</div>
 				</div>
@@ -132,8 +141,9 @@
 				<!-- /.box-header -->
 				<div class="box-body">
 					<div class="control-group">
-						<input class="btn btn-primary btn-sm" type="button" value="新增" onclick="openModel(1);" /> <input class="btn btn-warning btn-sm" type="button"
-							value="修改" onclick="openModel(2);" /> <input class="btn btn-danger btn-sm" type="button" value="刪除" onclick="deleteDetail();" />
+						<input class="btn btn-primary btn-sm" type="button" value="新增" onclick="expenses.openModel(1);" /> <input class="btn btn-warning btn-sm"
+							type="button" value="修改" onclick="expenses.openModel(2);" /> <input class="btn btn-danger btn-sm" type="button" value="刪除"
+							onclick="expenses.deleteDetail();" />
 					</div>
 					<div class="jqGrid_wrapper">
 						<table id="grid2"></table>
@@ -153,9 +163,15 @@
 <script src="plugins/jqGrid/js/grid.locale-tw.js"></script>
 <!-- Select2 -->
 <script src="plugins/almsaeed/plugins/select2/select2.full.min.js"></script>
-<!-- dialog -->
-<script src="plugins/bootstrap/js/bootstrap-dialog.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="plugins/almsaeed/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="plugins/almsaeed/plugins/datepicker/locales/bootstrap-datepicker.zh-TW.js"></script>
 
-<script type="text/javascript" src="js/expenses.js"></script>
+<!-- dialog -->
+<script src="plugins/bootstrap-dialog/js/bootstrap-dialog.min.js"></script>
+
+<script type="text/javascript" src="js/expenses/expenses.js"></script>
+<script type="text/javascript" src="js/expenses/expenses_valid.js"></script>
+<script type="text/javascript" src="js/expenses/expenses_grid.js"></script>
 </body>
 </html>

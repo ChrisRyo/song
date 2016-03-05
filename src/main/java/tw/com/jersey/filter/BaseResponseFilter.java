@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * 
@@ -32,10 +33,11 @@ public class BaseResponseFilter implements ContainerResponseFilter {
       return;
     }
 
-//    // Google Json
-//    if (arg1.getMediaType() != null
-//        && MediaType.APPLICATION_JSON.equals(arg1.getMediaType().toString())) {
-//      arg1.setEntity(new Gson().toJson(arg1.getEntity()));
-//    }
+    // Google Json
+    if (arg1.getMediaType() != null
+        && MediaType.APPLICATION_JSON.equals(arg1.getMediaType().toString())) {
+      Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+      arg1.setEntity(gson.toJson(arg1.getEntity()));
+    }
   }
 }
