@@ -20,27 +20,29 @@ import tw.com.logic.enums.DateStyle;
 public class EntityUtils {
 
   /**
-   * 所有欄位都使用模糊查詢
+   * 所有欄位查詢
    * 
    * @param entity
+   * @param isLike
    * @return
    * @throws Exception
    */
-  public static String getQueryEntitySql(Object entity) throws Exception {
+  public static String getQueryEntitySql(Object entity, boolean isLike) throws Exception {
     String type = "c";
-    return getSql(entity, type);
+    return getSql(entity, type, isLike);
   }
 
   /**
    * 查詢總筆數
    * 
    * @param entity
+   * @param isLike
    * @return
    * @throws Exception
    */
-  public static String getQueryCountSql(Object entity) throws Exception {
+  public static String getQueryCountSql(Object entity, boolean isLike) throws Exception {
     String type = "count(c)";
-    return getSql(entity, type);
+    return getSql(entity, type, isLike);
   }
 
   /**
@@ -48,10 +50,11 @@ public class EntityUtils {
    * 
    * @param entity
    * @param type
+   * @param isLike
    * @return
    * @throws Exception
    */
-  private static String getSql(Object entity, String type) throws Exception {
+  private static String getSql(Object entity, String type, boolean isLike) throws Exception {
 
     // getValue (select c : jpa select all 語法)
     StringBuffer sb =
@@ -59,7 +62,7 @@ public class EntityUtils {
 
 
     StringBuffer whereSb = new StringBuffer();
-    setSqlWhere(entity, whereSb);
+    setSqlWhere(entity, whereSb, isLike);
 
     if (whereSb.length() > 0) {
       sb.append(" WHERE ");
@@ -74,7 +77,8 @@ public class EntityUtils {
     return sb.toString();
   }
 
-  private static StringBuffer setSqlWhere(Object entity, StringBuffer whereSb) throws Exception {
+  private static StringBuffer setSqlWhere(Object entity, StringBuffer whereSb, boolean isLike)
+      throws Exception {
 
     Method[] Methods = entity.getClass().getMethods();
 
@@ -115,7 +119,12 @@ public class EntityUtils {
                 whereSb.append(column + " = STR_TO_DATE('" + date + "','"
                     + DateStyle.YYYY_MM_DD.getSql() + "') AND ");
               } else {
-                whereSb.append(column + " LIKE '%" + val + "%' AND ");
+                if (isLike) {
+                  whereSb.append(column + " LIKE '%" + val + "%' AND ");
+                } else {
+                  whereSb.append(column + " = '" + val + "' AND ");
+                }
+
               }
             }
           }

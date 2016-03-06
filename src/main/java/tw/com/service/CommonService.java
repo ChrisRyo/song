@@ -9,7 +9,7 @@ import java.util.List;
  *
  */
 public interface CommonService {
-  
+
   /**
    * 
    * @param sql
@@ -31,30 +31,34 @@ public interface CommonService {
    * 查詢 by entity
    * 
    * @param entity
+   * @param isLike
    * @return
    * @throws Exception
    */
-  public List<?> queryByEntity(Object entity) throws Exception;
-  
+  public List<?> queryByEntity(Object entity, boolean isLike) throws Exception;
+
   /**
    * 查詢總筆數 by entity
    * 
    * @param entity
+   * @param isLike
    * @return count
    * @throws Exception
    */
-  public int queryCountBySql(Object entity) throws Exception;
+  public int queryCountBySql(Object entity, boolean isLike) throws Exception;
 
   /**
    * 查詢 by entity where begin and end
    * 
    * @param entity
+   * @param isLike
    * @param begin
    * @param length
    * @return
    * @throws Exception
    */
-  public List<?> queryByEntity(Object entity, int begin, int length) throws Exception;
+  public List<?> queryByEntity(Object entity, boolean isLike, int begin, int length)
+      throws Exception;
 
   /**
    * 新增 by entity

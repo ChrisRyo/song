@@ -61,7 +61,7 @@ public class MemberRest {
   @Produces(MediaType.APPLICATION_JSON)
   @SuppressWarnings("unchecked")
   public List<Member> getAllMember(Member member) throws Exception {
-    return (List<Member>) service.queryByEntity(member);
+    return (List<Member>) service.queryByEntity(member, true);
   }
 
   /**

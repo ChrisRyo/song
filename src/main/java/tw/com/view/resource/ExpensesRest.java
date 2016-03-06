@@ -158,7 +158,7 @@ public class ExpensesRest extends BaseRest {
   @SuppressWarnings("unchecked")
   private ReturnMessage getMainData(ExpensesMain entity) throws Exception {
 
-    List<ExpensesMain> list = (List<ExpensesMain>) service.queryByEntity(entity);
+    List<ExpensesMain> list = (List<ExpensesMain>) service.queryByEntity(entity, true);
     return new ReturnMessage(true, ValidCode.SUCCESS.getCode(), list, list.size());
   }
 
@@ -180,7 +180,7 @@ public class ExpensesRest extends BaseRest {
     queryDto.setBillStore(entity.getBillStore());
     queryDto.setSource(entity.getSource());
 
-    List<Expenses> list = (List<Expenses>) service.queryByEntity(queryDto);
+    List<Expenses> list = (List<Expenses>) service.queryByEntity(queryDto, false);
 
     // tottalAmt
     String date = DateUtils.dateFormat(entity.getBillDate(), DateStyle.YYYY_MM_DD);

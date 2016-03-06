@@ -15,15 +15,15 @@ import lombok.Data;
 @Table(name = "member")
 @NamedQuery(name = "Member.findAll", query = "SELECT m FROM Member m")
 public class Member implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private String name;
+  @Id
+  private String name;
 
-	private String email;
+  private String email;
 
-	private String phone;
+  private String phone;
 
-	private String pwd;
+  private String pwd;
 
 }

@@ -1,10 +1,5 @@
 package tw.com.logic.utils;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Properties;
 
 public class PropertiesUtils {
 

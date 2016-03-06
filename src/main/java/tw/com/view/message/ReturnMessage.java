@@ -1,7 +1,5 @@
 package tw.com.view.message;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Data;
@@ -39,20 +37,20 @@ public class ReturnMessage {
     this.errorCode = errorCode;
   }
 
-  public ReturnMessage(boolean status, int errorCode, List<?> data) {
+  public ReturnMessage(boolean status, int errorCode, Object data) {
     this.status = status;
     this.errorCode = errorCode;
     this.data = data;
   }
 
-  public ReturnMessage(boolean status, int errorCode, List<?> data, int count) {
+  public ReturnMessage(boolean status, int errorCode, Object data, int count) {
     this.status = status;
     this.errorCode = errorCode;
     this.data = data;
     this.count = count;
   }
 
-  public ReturnMessage(boolean status, int errorCode, List<?> data, int count, Object other) {
+  public ReturnMessage(boolean status, int errorCode, Object data, int count, Object other) {
     this.status = status;
     this.errorCode = errorCode;
     this.data = data;

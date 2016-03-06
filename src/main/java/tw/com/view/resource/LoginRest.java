@@ -1,15 +1,24 @@
 package tw.com.view.resource;
 
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
 import tw.com.model.dto.User;
+import tw.com.model.vo.Account;
+import tw.com.service.CommonService;
+import tw.com.view.message.ReturnMessage;
+import tw.com.view.message.code.ValidCode;
 
 
 /**
@@ -21,6 +30,9 @@ import tw.com.model.dto.User;
  */
 @Path("/login")
 public class LoginRest {
+
+  @Inject
+  private CommonService service;
 
   @GET
   public Viewable init() throws Exception {
@@ -34,15 +46,25 @@ public class LoginRest {
    * @throws Exception
    */
   @POST
-  public String login(User user, @Context HttpServletRequest request,
+  @Produces(MediaType.APPLICATION_JSON)
+  @SuppressWarnings({"unchecked"})
+  public ReturnMessage login(User user, @Context HttpServletRequest request,
       @Context HttpServletResponse response) throws Exception {
-    if (!user.getAccount().equals("lin") || !user.getPassword().equals("qwer8888")) {
-      throw new Exception("帳號或密碼錯誤！");
+
+    Account acc = new Account();
+    acc.setUserName(user.getAccount());
+    acc.setPwd(user.getPassword());
+
+    List<Account> list = (List<Account>) service.queryByEntity(acc, false);
+
+    if (list == null || list.size() == 0) {
+      return new ReturnMessage(false, ValidCode.VALID_FAIL.getCode(), "帳號或密碼錯誤！");
     }
 
     request.getSession().setAttribute(User.USER_SESSION, user);
 
-    return request.getContextPath() + "/expenses";
+    return new ReturnMessage(true, ValidCode.SUCCESS.getCode(), request.getContextPath()
+        + "/expenses");
   }
 
 }
