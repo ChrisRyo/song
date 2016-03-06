@@ -17,6 +17,9 @@
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="plugins/almsaeed/dist/css/AdminLTE.min.css">
+<!-- waitMe -->
+<link rel="stylesheet" href="plugins/jqWaitMe/css/waitMe.css">
+
 
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
@@ -38,5 +41,5 @@
 <link rel="stylesheet" href="plugins/jqValidate/css/validationEngine.jquery.css">
 
 <script>
-	var _path = '${it.pathTitle}';
+  var _path = '${it.pathTitle}';
 </script>

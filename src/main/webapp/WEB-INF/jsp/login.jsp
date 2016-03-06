@@ -23,11 +23,8 @@
 			<h2 class=form-signin-heading>Please sign in</h2>
 			<label for=account class=sr-only>Account</label> <input type=text id=account class=form-control placeholder="Account" required autofocus> <label
 				for=password class=sr-only>Password</label> <input type=password id=password class=form-control placeholder=Password required>
-			<div class=checkbox>
-				<label> <input type=checkbox value=remember-me> Remember me
-				</label>
-			</div>
 			<button class="btn btn-lg btn-primary btn-block" type=button onClick="login()">Sign in</button>
+			<button type="button" class="btn btn-primary" id="demo">Submit</button>
 		</form>
 	</div>
 	<script src=plugins/bootstrap/js/ie10-viewport-bug-workaround.js></script>

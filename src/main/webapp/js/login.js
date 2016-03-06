@@ -1,3 +1,13 @@
+$(function() {
+
+  // none, bounce, rotateplane, stretch, orbit,
+  // roundBounce, win8, win8_linear or ios
+  var current_effect = 'bounce'; //
+  $('#demo').click(function() {
+    run_waitMe(current_effect);
+  });
+});
+
 function login() {
   $.ajax({
     type: 'POST',
@@ -7,7 +17,7 @@ function login() {
     success: function(json) {
       if (json.status) {
         alert("登入成功！");
-        document.location.href= location.origin + json.data;
+        document.location.href = location.origin + json.data;
       } else {
         alert(json.data);
       }
