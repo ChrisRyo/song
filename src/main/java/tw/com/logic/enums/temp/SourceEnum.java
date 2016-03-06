@@ -10,12 +10,12 @@ import tw.com.model.dto.Menu;
  * @author chrisryo
  *
  */
-public enum CompanyEnum {
-  鴻海(1), 奇美(2), 大立光(3), 水電木工(4), 好樂潔(5), 台塑(6);
+public enum SourceEnum {
+  八里大支出(1), 八里未付款(2), 八里店內(3), 台北大支出(4), 台北未付款(5), 台北店內(6), 台北損益_總(6), 倉庫(6), 調貨(7);
 
   private final int index;
 
-  private CompanyEnum(int index) {
+  private SourceEnum(int index) {
     this.index = index;
   }
 
@@ -28,12 +28,12 @@ public enum CompanyEnum {
    * @return
    */
   public static List<Menu> getMenu() {
-    
+
     List<Menu> list = new ArrayList<Menu>();
 
-    CompanyEnum[] enums = CompanyEnum.values();
+    SourceEnum[] enums = SourceEnum.values();
 
-    for (CompanyEnum e : enums) {
+    for (SourceEnum e : enums) {
       list.add(new Menu(e.getIndex(), e.name()));
     }
 

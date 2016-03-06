@@ -43,10 +43,6 @@ public class LoginRest {
     request.getSession().setAttribute(User.USER_SESSION, user);
 
     return request.getContextPath() + "/expenses";
-
-    // URI uri = URI.create(request.getContextPath() + "/sample");
-    //
-    // return Response.seeOther(uri).build();
   }
 
 }

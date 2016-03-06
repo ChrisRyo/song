@@ -9,6 +9,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
+import tw.com.logic.utils.UserUtils;
 import tw.com.model.dto.User;
 
 /**
@@ -21,7 +22,7 @@ public class BaseRequestFilter implements ContainerRequestFilter {
 
   @Context
   HttpServletRequest request;
-  
+
   public void filter(ContainerRequestContext requestCtx) throws IOException {
 
     String path = requestCtx.getUriInfo().getPath();
@@ -33,6 +34,8 @@ public class BaseRequestFilter implements ContainerRequestFilter {
       if (user == null) {
         requestCtx.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         return;
+      } else {
+        UserUtils.setUser(user);
       }
 
     }

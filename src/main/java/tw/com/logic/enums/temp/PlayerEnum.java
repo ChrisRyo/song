@@ -3,8 +3,6 @@ package tw.com.logic.enums.temp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import tw.com.model.dto.Menu;
 
 /**
@@ -29,16 +27,14 @@ public enum PlayerEnum {
    * 
    * @return
    */
-  public static List<Menu> getMenu(String name) {
-
+  public static List<Menu> getMenu() {
+    
     List<Menu> list = new ArrayList<Menu>();
 
     PlayerEnum[] enums = PlayerEnum.values();
 
     for (PlayerEnum e : enums) {
-      if (StringUtils.isEmpty(name) || e.name().indexOf(name) > -1) {
-        list.add(new Menu(e.getIndex(), e.name()));
-      }
+      list.add(new Menu(e.getIndex(), e.name()));
     }
 
     return list;

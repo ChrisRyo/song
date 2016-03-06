@@ -10,6 +10,10 @@ var expensesValid = function() {
         rule: "validate[custom[date]]",
         maxlength: 10
       }, {
+        name: "source",
+        rule: "validate[maxSize[20]]",
+        maxlength: 20
+      }, {
         name: "billStore",
         rule: "validate[maxSize[1]]",
         maxlength: 1
@@ -31,10 +35,6 @@ var expensesValid = function() {
         name: "realStore",
         rule: "validate[maxSize[1], required]",
         maxlength: 1
-      }, {
-        name: "source",
-        rule: "validate[maxSize[20]]",
-        maxlength: 20
       }, {
         name: "accountIteam",
         rule: "validate[maxSize[20]]",

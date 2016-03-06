@@ -2,6 +2,8 @@ var _form1 = "form1";
 var _form2 = "form2";
 var _grid1 = "grid1";
 var _grid2 = "grid2";
+var _table1 = "table1";
+var _table2 = "table2";
 var _tmpAmt;
 
 $(document).ready(function() {
@@ -17,15 +19,11 @@ $(document).ready(function() {
   $("[aria-hidden=true]").hide();
 
   // select2
-  $("#billStore, #realStore, #payeeUnit").select2({
-    width: '100%'
-  });
+  expenses.select2();
 
   // Datepicker
-  $('#billDate, #realDate').datepicker({
-    language: "zh-TW",
-    todayBtn: true,
-    format: "yyyy-mm-dd"
+  $('#billDate_tool, #realDate_tool').datetimepicker({
+    format: 'YYYY-MM-DD'
   });
 
   expensesGrid.initExpensesGrid();
@@ -58,92 +56,57 @@ var expenses = function() {
   return {
 
     initMenu: function() {
-      $.ajax({
-        type: 'GET',
-        contentType: 'application/json',
-        url: _path + "/menu/queryStroe",
-        dataType: "json", // data type of response
-        success: function(json) {
-          for ( var o in json) {
-            $('#billStore, #realStore').append(
-                    '<option value="' + json[o].id + '">' + json[o].text + '</option>');
-          }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          alert(xhr.status);
-          alert(thrownError);
-        }
-      });
+      
+      var url = "/menu/getEmenu/";
+      
+      commonUtils.getMenu(url + "queryStroe", $('#billStore, #realStore'));
+      commonUtils.getMenu(url + "querySource", $('#source'));
+      commonUtils.getMenu(url + "queryPayeeUnit", $('#payeeUnit'));
+      commonUtils.getMenu(url + "queryPlayer", $('#payeePlayer'));
+      commonUtils.getMenu(url + "queryCompany", $('#payeeCompany'));
+      commonUtils.getMenu(url + "queryGovernment", $('#payeeGovernment'));
 
-      $.ajax({
-        type: 'GET',
-        contentType: 'application/json',
-        url: _path + "/menu/queryPayeeUnit",
-        dataType: "json", // data type of response
-        success: function(json) {
-          for ( var o in json) {
-            $('#payeeUnit').append(
-                    '<option value="' + json[o].id + '">' + json[o].text + '</option>');
-          }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          alert(xhr.status);
-          alert(thrownError);
-        }
-      });
+    },
 
-      $("#payee").select2({
-        ajax: {
-          url: _path + "/menu/queryPayee",
-          dataType: 'json',
-          type: "GET",
-
-          // 夾帶參數
-          data: function(info, page) {
-            return {
-              unit: $('#payeeUnit').val(),
-              name: info.term, // 在上面打的搜尋文字項目
-              page_limit: 10, // page size
-              page: page, // page number
-            };
-          },
-
-          // 成功返回的項目
-          processResults: function(data, params) {
-            return {
-              results: data
-            };
-          },
-        },
-        width: "100%",
-        placeholder: "請款人",
+    select2: function() {
+      $(".select2").select2({
+        width: '100%'
       });
 
       // event
       $("#payeeUnit").change(function() {
         $("#payee option[value!='']").remove();
+        
+        if ($(this).val() == 1) {
+          $("#payee").append($('#payeePlayer').html());
+        } else if ($(this).val() == 2) {
+          $("#payee").append($('#payeeCompany').html());
+        } else if ($(this).val() == 3) {
+          $("#payee").append($('#payeeGovernment').html());
+        }
+        
         $("#payee").val('').change();
       });
     },
 
     // button
     openModel: function(type) {
-      
+
       if (type == 1) {
         $("#saveDetail").val("新增");
       } else {
+        var chkId = $("#" + _grid2).getGridParam('selrow');
+        if (!chkId) {
+          BootstrapDialog.show({
+            message: '請選取資料！'
+          });
+          return false;
+        }
+        
         $("#saveDetail").val("修改");
       }
 
       $('#table2').modal("show");
-
-      var id = $("#" + _grid2).getGridParam('selrow');
-
-      var row = $("#" + _grid2).jqGrid('getRowData', id)
-
-      for ( var o in row) {
-        $("#" + o).val(row[o]);
-      }
 
       $("#saveType").val(type);
 
@@ -152,185 +115,14 @@ var expenses = function() {
     save: function() {
       var type = $("#saveType").val();
       if (type == 1) {
-        this.addDetail();
+        expensesSubmit.addDetail();
       } else if (type == 2) {
-        this.updateDetail();
+        expensesSubmit.updateDetail();
       } else {
         alert("err saveType");
       }
     },
 
-    // event
-    findMain: function() {
-      $.ajax({
-        type: 'POST',
-        contentType: 'application/json',
-        url: _path + "/expenses/queryMain",
-        dataType: "json", // data type of response
-        data: this.formMainToJSON(),
-        success: function(json) {
-          commonUtils.autoJsonToGrid(_grid1, json.data);
-          $("#table1Grid").show();
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          alert(xhr.status);
-          alert(thrownError);
-        }
-      });
-    },
-
-    findDetail: function() {
-      $.ajax({
-        type: 'POST',
-        contentType: 'application/json',
-        url: _path + "/expenses/queryDetail",
-        dataType: "json", // data type of response
-        data: this.formDetailToJSON("query"),
-        success: function(json) {
-          commonUtils.autoJsonToGrid(_grid2, json.data);
-          expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
-          $("#table2Grid").show();
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          alert(xhr.status);
-          alert(thrownError);
-        }
-      });
-    },
-
-    addMain: function() {
-      $.ajax({
-        type: 'POST',
-        contentType: 'application/json',
-        url: _path + "/expenses/addMain",
-        dataType: "json",
-        data: this.formMainToJSON(),
-        success: function(json) {
-          BootstrapDialog.show({
-            message:'新增成功！'
-          });
-          commonUtils.autoJsonToGrid(_grid1, json.data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('addExpenses error: ' + textStatus);
-        }
-      });
-    },
-
-    addDetail: function() {
-      $.ajax({
-        type: 'POST',
-        contentType: 'application/json',
-        url: _path + "/expenses/addDetail",
-        dataType: "json",
-        data: this.formDetailToJSON(),
-        success: function(json) {
-          BootstrapDialog.show({
-            message:'新增成功！'
-          });
-          commonUtils.autoJsonToGrid(_grid2, json.data);
-          expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('addExpenses error: ' + textStatus);
-        }
-      });
-    },
-    
-    updateMain: function() {
-      $.ajax({
-        type: 'POST',
-        contentType: 'application/json',
-        url: _path + "/expenses/updateMain",
-        dataType: "json",
-        data: this.formMainToJSON(),
-        success: function(json) {
-          BootstrapDialog.show({
-            message:'更新成功！'
-          });
-          _tmpAmt = $("#realTotalAmt");
-          $("#realTotalAmtUpdate").hide();
-          commonUtils.autoJsonToGrid(_grid1, json.data);
-          $("#table1Grid").show();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('addExpenses error: ' + textStatus);
-        }
-      });
-    },
-
-    updateDetail: function() {
-      $.ajax({
-        type: 'POST',
-        contentType: 'application/json',
-        url: _path + "/expenses/updateDetail",
-        dataType: "json",
-        data: this.formDetailToJSON(),
-        success: function(json) {
-          BootstrapDialog.show({
-            message:'更新成功！'
-          });
-          commonUtils.autoJsonToGrid(_grid2, json.data);
-          expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('addExpenses error: ' + textStatus);
-        }
-      });
-    },
-
-    deleteDetail: function() {
-      $.ajax({
-        type: 'POST',
-        contentType: 'application/json',
-        url: _path + "/expenses/deleteDetail",
-        dataType: "json",
-        data: this.formDetailToJSON(),
-        success: function(json) {
-          alert('delete ok!');
-          commonUtils.autoJsonToGrid(_grid2, json.data);
-          expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('addExpenses error: ' + textStatus);
-        }
-      });
-    },
-
-    formMainToJSON: function() {
-      return JSON.stringify({
-        "billDate": new Date($('#billDate').val()),
-        "billStore": $('#billStore').val(),
-        "realTotalAmt": $('#realTotalAmt').val(),
-      });
-    },
-
-    formDetailToJSON: function(type) {
-      if ("query" == type) { return JSON.stringify({
-        "billDate": new Date($('#billDate').val()),
-        "billStore": $('#billStore').val(),
-      }); }
-
-      return JSON.stringify({
-        "seq": $("#seq").val(),
-        "billDate": new Date($('#billDate').val()),
-        "realDate": new Date($('#realDate').val()),
-        "billStore": $('#billStore').val(),
-        "realStore": $('#realStore').val(),
-        "source": $('#source').val(),
-        "accountIteam": $('#accountIteam').val(),
-        "detail": $('#detail').val(),
-        "payeeUnit": $("#payeeUnit").val(),
-        "payee": $('#payee').val(),
-        "workTime": $('#workTime').val(),
-        "workType": $('#workType').val(),
-        "price": $('#price').val(),
-        "quantity": $('#quantity').val(),
-        "unit": $('#unit').val(),
-        "amt": $('#amt').val()
-      });
-    },
-    
     totalAmtFormat: function(realTotalAmt, chkTotalAmt) {
       if (realTotalAmt != chkTotalAmt) {
         $("#realTotalAmtChk").removeClass("bg-green").addClass("bg-red").text(chkTotalAmt);

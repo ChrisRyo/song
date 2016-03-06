@@ -3,13 +3,15 @@
 <jsp:include page="../common/header.jsp" />
 <!-- 自訂 css (位置要固定)-->
 <!-- jqgrid -->
-<link rel="stylesheet" href="plugins/jqGrid/css/ui.jqgrid.css">
+<link rel="stylesheet" href="plugins/jqGrid/css/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" href="plugins/jqGrid/css/ui.jqgrid-bootstrap-ui.css">
+<link rel="stylesheet" href="plugins/jqGrid/css/ui.multiselect.css">
 
 <!-- Select2 -->
 <link rel="stylesheet" href="plugins/almsaeed/plugins/select2/select2.min.css">
 
 <!-- Bootstrap time Picker -->
-<link rel="stylesheet" href="plugins/almsaeed/plugins/datepicker/datepicker3.css">
+<link rel="stylesheet" href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
 
 <!-- dialog -->
 <link rel="stylesheet" href="plugins/bootstrap-dialog/css/bootstrap-dialog.min.css">
@@ -48,11 +50,20 @@
 							<div class="row">
 								<div class="col-md-2">
 									<label>請款日期</label>
-									<div class="input-group">
-										<input type="text" id="billDate" placeholder="YYYY-MM-DD">
-										<div class="input-group-addon">
-											<i class="fa fa-calendar"></i>
+									<div class="form-group">
+										<div class='input-group date' id='billDate_tool'>
+											<input type='text' id='billDate' placeholder="YYYY-MM-DD" /> <span class="input-group-addon"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
 										</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<label>來源</label>
+									<div>
+										<select id="source" class="select2">
+											<option value="">請選擇</option>
+										</select>
 									</div>
 								</div>
 								<div class="col-md-2">
@@ -68,15 +79,15 @@
 									</label>
 									<div>
 										<input type="text" id="realTotalAmt"> <input type="button" id="realTotalAmtUpdate" class="btn btn-xs btn-warning" value="金額存檔"
-											onclick="expenses.updateMain();" aria-hidden="true">
+											onclick="expensesSubmit.updateMain();" aria-hidden="true">
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<input class="btn btn-success btn-sm" type="button" value="查詢" onclick="expenses.findMain();" /> <input class="btn btn-primary btn-sm"
-									type="button" id="addMain" value="新增" onclick="expenses.addMain();" />
+								<input class="btn btn-success btn-sm" type="button" value="查詢" onclick="expensesSubmit.findMain();" /> <input class="btn btn-primary btn-sm"
+									type="button" id="addMain" value="新增" onclick="expensesSubmit.addMain();" />
 							</div>
 						</div>
 
@@ -121,8 +132,8 @@
 							<!-- 內容 end -->
 						</div>
 						<div class="modal-footer">
-							<input type="button" class="btn btn-default" data-dismiss="modal" value="取消">
-							<input type="button" id="saveDetail"class="btn btn-primary" value="確認"onclick="expenses.save();">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="取消"> <input type="button" id="saveDetail"
+								class="btn btn-primary" value="確認" onclick="expenses.save();">
 						</div>
 					</div>
 				</div>
@@ -142,7 +153,7 @@
 					<div class="control-group">
 						<input class="btn btn-primary btn-sm" type="button" value="新增" onclick="expenses.openModel(1);" /> <input class="btn btn-warning btn-sm"
 							type="button" value="修改" onclick="expenses.openModel(2);" /> <input class="btn btn-danger btn-sm" type="button" value="刪除"
-							onclick="expenses.deleteDetail();" />
+							onclick="expensesSubmit.deleteDetail();" />
 					</div>
 					<div class="jqGrid_wrapper">
 						<table id="grid2"></table>
@@ -158,19 +169,24 @@
 <jsp:include page="../common/footer.jsp" />
 <!-- 自訂 js (位置要固定)-->
 <!-- jqgrid -->
-<script src="plugins/jqGrid/js/jquery.jqGrid.min.js"></script>
+<script src="plugins/jqGrid/js/jquery.jqGrid.js"></script>
 <script src="plugins/jqGrid/js/grid.locale-tw.js"></script>
+
 <!-- Select2 -->
 <script src="plugins/almsaeed/plugins/select2/select2.full.min.js"></script>
+
 <!-- bootstrap time picker -->
-<script src="plugins/almsaeed/plugins/datepicker/bootstrap-datepicker.js"></script>
-<script src="plugins/almsaeed/plugins/datepicker/locales/bootstrap-datepicker.zh-TW.js"></script>
+<script src="plugins/moment/js/moment.js"></script>
+<script src="plugins/moment/js/locale/zh-tw.js"></script>
+<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 
 <!-- dialog -->
 <script src="plugins/bootstrap-dialog/js/bootstrap-dialog.min.js"></script>
 
+<!-- self -->
 <script type="text/javascript" src="js/expenses/expenses.js"></script>
 <script type="text/javascript" src="js/expenses/expenses_valid.js"></script>
 <script type="text/javascript" src="js/expenses/expenses_grid.js"></script>
+<script type="text/javascript" src="js/expenses/expenses_submit.js"></script>
 </body>
 </html>

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,6 +20,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import lombok.Data;
 import tw.com.jersey.moxyAdapter.DateAdapter;
+import tw.com.logic.utils.UserUtils;
 
 
 /**
@@ -44,6 +46,9 @@ public class ExpensesMain implements Serializable {
   @Column(name = "bill_store")
   private String billStore;
 
+  @Id
+  private Integer source;
+
   @Column(name = "real_total_amt")
   private BigDecimal realTotalAmt;
 
@@ -59,6 +64,18 @@ public class ExpensesMain implements Serializable {
   @Column(name = "update_user")
   private String updateUser;
 
+  /**
+   * 
+   * @param source
+   */
+  public void setSource(Integer source) {
+    if (source == 0) {
+      this.source = null;
+    } else {
+      this.source = source;
+    }
+  }
+
   @PrePersist
   protected void onCreate() {
     if (creatTime == null) {
@@ -66,8 +83,14 @@ public class ExpensesMain implements Serializable {
     }
 
     if (creatUser == null) {
-      creatUser = "ryo";
+      creatUser = UserUtils.getUser().getAccount();
     }
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    updateTime = new Timestamp(new Date().getTime());
+    updateUser = UserUtils.getUser().getAccount();
   }
 
 }

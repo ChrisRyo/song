@@ -1,7 +1,6 @@
 package tw.com.view.resource;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,7 +15,6 @@ import org.glassfish.jersey.server.mvc.Viewable;
 
 import tw.com.logic.enums.DateStyle;
 import tw.com.logic.utils.DateUtils;
-import tw.com.logic.utils.PropertiesUtils;
 import tw.com.model.vo.Expenses;
 import tw.com.model.vo.ExpensesMain;
 import tw.com.service.CommonService;
@@ -173,13 +171,14 @@ public class ExpensesRest extends BaseRest {
   @SuppressWarnings("unchecked")
   private ReturnMessage getDetailData(Expenses entity) throws Exception {
 
-    if (entity.getBillDate() == null || entity.getBillStore() == null) {
+    if (entity.getBillDate() == null || entity.getBillStore() == null || entity.getSource() == null) {
       throw new Exception("缺少查詢條件");
     }
 
     Expenses queryDto = new Expenses();
     queryDto.setBillDate(entity.getBillDate());
     queryDto.setBillStore(entity.getBillStore());
+    queryDto.setSource(entity.getSource());
 
     List<Expenses> list = (List<Expenses>) service.queryByEntity(queryDto);
 
@@ -188,14 +187,19 @@ public class ExpensesRest extends BaseRest {
     String billDate = "STR_TO_DATE('" + date + "','" + DateStyle.YYYY_MM_DD.getSql() + "')";
 
     Object obj =
-        service.queryBySql(this.getSql(billDate, entity.getBillStore()));
+        service.queryBySql(this.getSql(billDate, entity.getBillStore(), entity.getSource()));
 
     return new ReturnMessage(true, ValidCode.SUCCESS.getCode(), list, list.size(), obj);
   }
 
+  /**
+   * 
+   * @param val
+   * @return
+   */
   private String getSql(Object... val) {
     String sql =
-        "SELECT sum(e.amt) as totalAmt FROM Expenses e where e.billDate = {0} AND e.billStore = {1}";
+        "SELECT sum(e.amt) as totalAmt FROM Expenses e where e.billDate = {0} AND e.billStore = {1} AND e.source = {2}";
 
     return MessageFormat.format(sql, val);
   }
