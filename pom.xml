@@ -78,6 +78,13 @@
 			<version>${mysql.version}</version>
 		</dependency>
 		
+		<!-- logback -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.13</version>
+		</dependency>
+		
 		<!-- commons -->
 		<dependency>
 			<groupId>commons-lang</groupId>

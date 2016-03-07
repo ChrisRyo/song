@@ -58,13 +58,12 @@ public class LoginRest {
     List<Account> list = (List<Account>) service.queryByEntity(acc, false);
 
     if (list == null || list.size() == 0) {
-      return new ReturnMessage(false, ValidCode.VALID_FAIL.getCode(), "帳號或密碼錯誤！");
+      return new ReturnMessage(ValidCode.VALID_FAIL.getCode(), "帳號或密碼錯誤！");
     }
 
     request.getSession().setAttribute(User.USER_SESSION, user);
 
-    return new ReturnMessage(true, ValidCode.SUCCESS.getCode(), request.getContextPath()
-        + "/expenses");
+    return new ReturnMessage(ValidCode.SUCCESS.getCode(), request.getContextPath() + "/expenses");
   }
 
 }

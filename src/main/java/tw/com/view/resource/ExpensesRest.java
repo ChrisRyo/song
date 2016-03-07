@@ -1,7 +1,10 @@
 package tw.com.view.resource;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Properties;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -12,6 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import tw.com.logic.enums.DateStyle;
 import tw.com.logic.utils.DateUtils;
@@ -31,6 +36,8 @@ import tw.com.view.message.code.ValidCode;
  */
 @Path("/expenses")
 public class ExpensesRest extends BaseRest {
+
+  private final static Logger LOGGER = LoggerFactory.getLogger(ExpensesRest.class);
 
   @Inject
   private CommonService service;
@@ -159,7 +166,7 @@ public class ExpensesRest extends BaseRest {
   private ReturnMessage getMainData(ExpensesMain entity) throws Exception {
 
     List<ExpensesMain> list = (List<ExpensesMain>) service.queryByEntity(entity, true);
-    return new ReturnMessage(true, ValidCode.SUCCESS.getCode(), list, list.size());
+    return new ReturnMessage(ValidCode.SUCCESS.getCode(), list);
   }
 
   /**
@@ -171,7 +178,8 @@ public class ExpensesRest extends BaseRest {
   @SuppressWarnings("unchecked")
   private ReturnMessage getDetailData(Expenses entity) throws Exception {
 
-    if (entity.getBillDate() == null || entity.getBillStore() == null || entity.getSource() == null) {
+    if (entity.getBillDate() == null || entity.getBillStore() == null
+        || entity.getSource() == null) {
       throw new Exception("缺少查詢條件");
     }
 
@@ -189,7 +197,7 @@ public class ExpensesRest extends BaseRest {
     Object obj =
         service.queryBySql(this.getSql(billDate, entity.getBillStore(), entity.getSource()));
 
-    return new ReturnMessage(true, ValidCode.SUCCESS.getCode(), list, list.size(), obj);
+    return new ReturnMessage(ValidCode.SUCCESS.getCode(), list);
   }
 
   /**
@@ -198,8 +206,15 @@ public class ExpensesRest extends BaseRest {
    * @return
    */
   private String getSql(Object... val) {
-    String sql =
-        "SELECT sum(e.amt) as totalAmt FROM Expenses e where e.billDate = {0} AND e.billStore = {1} AND e.source = {2}";
+    String sql = "";
+    try {
+      Properties prop = new Properties();
+      InputStream fis = getClass().getResourceAsStream("/Expenses.queryTotalAmt");
+      prop.load(fis);
+      sql = prop.getProperty("LotteryApi");
+    } catch (IOException e) {
+      LOGGER.error(e.getMessage());
+    }
 
     return MessageFormat.format(sql, val);
   }
