@@ -196,8 +196,9 @@ public class ExpensesRest extends BaseRest {
 
     Object obj =
         service.queryBySql(this.getSql(billDate, entity.getBillStore(), entity.getSource()));
+    
 
-    return new ReturnMessage(ValidCode.SUCCESS.getCode(), list);
+    return new ReturnMessage(ValidCode.SUCCESS.getCode(), list, obj);
   }
 
   /**
@@ -209,9 +210,9 @@ public class ExpensesRest extends BaseRest {
     String sql = "";
     try {
       Properties prop = new Properties();
-      InputStream fis = getClass().getResourceAsStream("/Expenses.queryTotalAmt");
+      InputStream fis = getClass().getResourceAsStream("/jpql.properties");
       prop.load(fis);
-      sql = prop.getProperty("LotteryApi");
+      sql = prop.getProperty("Expenses.queryTotalAmt");
     } catch (IOException e) {
       LOGGER.error(e.getMessage());
     }

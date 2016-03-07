@@ -125,23 +125,33 @@ var expensesSubmit = function() {
     },
 
     deleteDetail: function() {
-      $.ajax({
-        type: 'POST',
-        contentType: 'application/json',
-        url: _path + "/expenses/removeDetail",
-        dataType: "json",
-        data: this.formDetailToJSON(),
-        success: function(json) {
-          BootstrapDialog.show({
-            message: '刪除成功！'
-          });
-          commonUtils.autoJsonToGrid(_grid2, json.data);
-          expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('addExpenses error: ' + textStatus);
+      BootstrapDialog.confirm({
+        message: '是否確定刪除?',
+        type: BootstrapDialog.TYPE_WARNING,
+        callback: function(result) {
+          // result will be true if button was click, while it will be false if
+          // users close the dialog directly.
+          if (result) {
+            $.ajax({
+              type: 'POST',
+              contentType: 'application/json',
+              url: _path + "/expenses/removeDetail",
+              dataType: "json",
+              data: expensesSubmit.formDetailToJSON(),
+              success: function(json) {
+                BootstrapDialog.show({
+                  message: '刪除成功！'
+                });
+                commonUtils.autoJsonToGrid(_grid2, json.data);
+                expenses.totalAmtFormat($('#realTotalAmt').val(), json.other);
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                alert('addExpenses error: ' + textStatus);
+              }
+            });
+          }
         }
-      });
+      })
     },
 
     formMainToJSON: function() {
