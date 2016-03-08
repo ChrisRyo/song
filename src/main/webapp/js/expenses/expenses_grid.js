@@ -21,13 +21,18 @@ var expensesGrid = function() {
         subGrid: false,// 是否启用子表格
         rowNum: 10, // 由Server取回10筆
         rowList: [10, 20, 30], // 每頁顯示筆數
-        colNames: ['請款日期', '來源', '請款店家h', '請款店家', '總金額'],
+        colNames: ['請款日期', '來源h', '來源', '請款店家h', '請款店家', '總金額'],
         colModel: [{
           name: 'billDate',
           index: 'billDate'
         }, {
           name: 'source',
-          index: 'source'
+          index: 'source',
+          hidden: true
+        }, {
+          name: 'source',
+          index: 'source',
+          formatter: this.formatSource
         }, {
           name: 'billStore',
           index: 'billStore',
@@ -141,7 +146,13 @@ var expensesGrid = function() {
       var name = $('#realStore option[value=' + val + ']').text();
       return name == "" ? val : name;
     },
-
+    
+    formatSource: function(cellvalue, options, rowObject) {
+      var val = rowObject.source;
+      var name = $('#source option[value=' + val + ']').text();
+      return name == "" ? val : name;
+    },
+    
     formatBillStore: function(cellvalue, options, rowObject) {
       var val = rowObject.billStore;
       var name = $('#billStore option[value=' + val + ']').text();

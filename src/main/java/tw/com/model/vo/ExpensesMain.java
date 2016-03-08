@@ -69,7 +69,7 @@ public class ExpensesMain implements Serializable {
    * @param source
    */
   public void setSource(Integer source) {
-    if (source == 0) {
+    if (source == null || source == 0) {
       this.source = null;
     } else {
       this.source = source;

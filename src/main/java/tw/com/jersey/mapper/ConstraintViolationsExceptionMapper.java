@@ -9,8 +9,6 @@ import javax.ws.rs.ext.Provider;
 import tw.com.view.message.ReturnMessage;
 
 /**
- * ConstraintViolationException mapping
- * @author zach.han
  *
  */
 @Provider

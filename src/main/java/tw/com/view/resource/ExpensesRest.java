@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,6 +24,7 @@ import tw.com.logic.utils.DateUtils;
 import tw.com.model.vo.Expenses;
 import tw.com.model.vo.ExpensesMain;
 import tw.com.service.CommonService;
+import tw.com.view.bean.ExpensesMainBean;
 import tw.com.view.message.ReturnMessage;
 import tw.com.view.message.code.ValidCode;
 
@@ -86,9 +88,9 @@ public class ExpensesRest extends BaseRest {
   @Path("addMain")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public ReturnMessage addMain(ExpensesMain expensesMain) throws Exception {
-    service.insertByEntity(expensesMain);
-    return this.getMainData(expensesMain);
+  public ReturnMessage addMain(@Valid ExpensesMainBean bean) throws Exception {
+    service.insertByEntity(bean.getEntity());
+    return this.getMainData(bean.getEntity());
   }
 
   /**
@@ -164,8 +166,13 @@ public class ExpensesRest extends BaseRest {
    */
   @SuppressWarnings("unchecked")
   private ReturnMessage getMainData(ExpensesMain entity) throws Exception {
+    
+    ExpensesMain newEntity = new ExpensesMain();
+    newEntity.setBillDate(entity.getBillDate());
+    newEntity.setBillStore(entity.getBillStore());
+    newEntity.setSource(entity.getSource());
 
-    List<ExpensesMain> list = (List<ExpensesMain>) service.queryByEntity(entity, true);
+    List<ExpensesMain> list = (List<ExpensesMain>) service.queryByEntity(newEntity, true);
     return new ReturnMessage(ValidCode.SUCCESS.getCode(), list);
   }
 

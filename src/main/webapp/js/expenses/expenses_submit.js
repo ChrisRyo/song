@@ -41,25 +41,24 @@ var expensesSubmit = function() {
       });
     },
 
-    addMain: function(form, status) {
-      if (status) {
-        $.ajax({
-          type: 'POST',
-          contentType: 'application/json',
-          url: _path + "/expenses/addMain",
-          dataType: "json",
-          data: this.formMainToJSON(),
-          success: function(json) {
-            BootstrapDialog.show({
-              message: '新增成功！'
-            });
-            commonUtils.autoJsonToGrid(_grid1, json.data);
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            alert('addExpenses error: ' + textStatus);
-          }
-        });
-      }
+    addMain: function() {
+      $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+        url: _path + "/expenses/addMain",
+        dataType: "json",
+        data: this.formMainToJSON(),
+        success: function(json) {
+          BootstrapDialog.show({
+            message: '新增成功！'
+          });
+          commonUtils.autoJsonToGrid(_grid1, json.data);
+          $("#table2Grid").show();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('addExpenses error: ' + textStatus);
+        }
+      });
     },
 
     addDetail: function() {

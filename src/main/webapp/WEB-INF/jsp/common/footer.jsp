@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.1.4 -->
@@ -9,11 +10,9 @@
 <script src="plugins/almsaeed/dist/js/app.min.js"></script>
 <!-- waitMe -->
 <script src="plugins/jqWaitMe/js/waitMe.js"></script>
+<!-- Validator -->
+<script src="plugins/bootstrap-validator/js/bootstrapValidator.js"></script>
 
-<!-- jquery.validationEngine -->
-<script src="plugins/jqValidate/js/jquery.validationEngine-zh_CN.js"></script>
-<script src="plugins/jqValidate/js/jquery.validationEngine.min.js"></script>
-
-<!--  -->
+<!-- self -->
 <script src="js/utils/commonUtils.js"></script>
 <script src="js/utils/comValidation.js"></script>

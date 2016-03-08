@@ -12,15 +12,15 @@ var comValidation = function() {
      */
     validationInit: function(condition, form) {
 
-      for (var i = 0; i < condition.length; i++) {
-
-        var cond = condition[i];
-
-        $("#" + form + " [id=" + cond.name + "]").addClass(cond.rule).attr('maxlength', cond.maxlength);
-
-      }
-      
-      $("#" + form).validationEngine();
+//      for (var i = 0; i < condition.length; i++) {
+//
+//        var cond = condition[i];
+//
+//        $("#" + form + " [id=" + cond.name + "]").addClass(cond.rule).attr('maxlength', cond.maxlength);
+//
+//      }
+//      
+//      $("#" + form).validationEngine();
     },
   }
 }();
