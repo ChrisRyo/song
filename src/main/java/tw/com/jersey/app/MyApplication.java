@@ -13,7 +13,7 @@ public class MyApplication extends ResourceConfig {
 
     // service build
     register(new MyApplicationBinder());
-
+    
     // Resources
     packages("tw.com.view.resource");
 
@@ -25,6 +25,7 @@ public class MyApplication extends ResourceConfig {
     register(MvcFeature.class);
     
     // Bean Validation
+    register(new MyApplicationValid());
     register(ConstraintViolationsExceptionMapper.class);
     
     // JSP
