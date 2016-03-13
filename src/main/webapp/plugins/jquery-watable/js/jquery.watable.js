@@ -27,6 +27,9 @@
  2. 修改format.f傳入參數 format.f(val) -> format(val, row)
  3. 修改table寬度為100%
  4. _data.count -> _data.count
+ 5. 修改筆數計算
+ 6. add rownumbers
+ 
  */
 (function ($, undefined) {
 
@@ -54,6 +57,7 @@
             sorting: true, // enable column sorting
             sortEmptyLast: true, //empty values will be shown last
             dataBind: false, //updates table when detecting row data changes
+            rownumbers: false,
             types: { //type specific options
                 string: {},
                 number: {},
@@ -236,6 +240,11 @@
                 _head.find('.sort i').tooltip('hide');
                 _head.find(".sort").remove();
                 _headSort = $('<tr class="sort"></tr>').prependTo(_head);
+                
+                // TODO 2016-03-12
+                if (priv.options.rownumbers) {
+                  $('<td></td>').appendTo(_headSort);
+                }
 
                 //create the checkall toggle
                 if (_uniqueCol && priv.options.checkboxes) {
@@ -246,7 +255,7 @@
                         elem.on('change', priv.checkToggleChanged);
                     }
                 }
-
+                
                 //create the sortable headers
                 for (var i = 0; i < colsSorted.length; i++) {
                     var column = colsSorted[i];
@@ -456,9 +465,16 @@
 
                 //slice out the chunk of data we need and create rows
 //                $.each(_data.rows.slice(_data.meta.fromRow, _data.meta.toRow), function (index, row) {
+                var indexNum = ((_currPage - 1) * priv.options.pageSize) + 1;
+                
                 $.each(_data.rows, function (index, row) {
 
                     var rowRendered = $('<tr class="{0}"></tr>'.f(index%2 == 0 ? 'odd' : 'even')).appendTo(_body);
+                    
+                    // TODO 2016-03-12
+                    if (priv.options.rownumbers) {
+                      $('<td align="right" width="1%">'+indexNum+++'</td>').appendTo(rowRendered);
+                    }
                     
                     if (_uniqueCol) {
                         _data.meta.rowsRendered[row[_uniqueCol]] = rowRendered;
@@ -467,7 +483,7 @@
                         if (priv.options.checkboxes) {
                             var check = _data.meta.rowsChecked[row[_uniqueCol]] != undefined ? 'checked' : '';
                             var checkable = row['row-checkable'] === false ? 'disabled' : '';
-                            var cell = $('<td class="watable-col-cbunique"></td>').appendTo(rowRendered);
+                            var cell = $('<td class="watable-col-cbunique" align="center" width="1%"></td>').appendTo(rowRendered);
                             $('<input class="unique" {0} {1} type="checkbox" />'.f(check, checkable)).appendTo(cell);
                         }
                     }
@@ -489,10 +505,11 @@
                         }
                     }
                 });
-
+                
                 //pad with empty rows?
                 if (priv.options.pageSize != -1 && (_currPage == _totalPages && _currPage > 1) || priv.options.pageSizePadding) {
                     var loops = priv.options.pageSize - (_data.meta.toRow - _data.meta.fromRow);
+
                     while (loops-- >0) {
                         var row = $('<tr></tr>').appendTo(_body);
 
@@ -565,9 +582,12 @@
                 var footCell = $('<td colspan="999"></td>').appendTo(footRow);
 
                 //create summary
-                if (_data.count > 0)
-                    $('<p>筆數 {0}-{1} 共 {2}</p>'.f(_data.meta.fromRow + 1, Math.min(_data.meta.toRow, _data.count), _data.count)).appendTo(footCell);
-                else {
+                if (_data.count > 0){
+                    // TODO
+                    var indexCount = ((_currPage - 1) * priv.options.pageSize) + 1;
+                    $('<p>筆數 {0}-{1} 共 {2} 筆</p>'.f(indexCount, Math.min(indexCount + priv.options.pageSize - 1, _data.count), _data.count)).appendTo(footCell);
+                    
+                }else {
                     $('<p>無資料</p>').appendTo(footCell);
                 }
 
@@ -607,7 +627,7 @@
                 //create pagesize dropdown
                 if (priv.options.pageSizes.length) {
                     var div = $('<div class="btn-group dropup pagesize"></div>').appendTo(footToolbar);
-                    var btn = $('<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">顯示筆數</button>').appendTo(div);
+                    var btn = $('<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">筆數</button>').appendTo(div);
                     var span = $('<span class="caret"></span>').appendTo(btn);
                     var ul = $('<ul class="dropdown-menu">').appendTo(div);
 
@@ -621,7 +641,7 @@
                 //create columnpicker dropdown
                 if (priv.options.columnPicker) {
                     var div = $('<div class="btn-group dropup columnpicker"></div>').appendTo(footToolbar);
-                    var btn = $('<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">欄位顯示</button>').appendTo(div);
+                    var btn = $('<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">欄位</button>').appendTo(div);
                     var span = $('<span class="caret"></span>').appendTo(btn);
                     var ul = $('<ul class="dropdown-menu">').appendTo(div);
 
@@ -777,14 +797,14 @@
             var start = new priv.ext.XDate();
             
             // TODO 2016-03-12
-            var postData = $.parseJSON(jsonData ? jsonData : priv.options.urlData);
+            var postData = jsonData ? jsonData : priv.options.urlData;
             postData.pageSize = priv.options.pageSize ? priv.options.pageSize : 1;
             postData.pageIndex = _currPage ? _currPage : 1;
             postData.pageSort = priv.sort();
 
             $.ajax({
                 url: priv.options.url,
-                type: 'POST',
+                type: priv.options.urlPost ? 'POST' : 'GET',
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(postData),
@@ -810,7 +830,7 @@
                     priv.setData(data, skipCols, resetChecked);
                     
                     if (typeof callback == "function")
-                        callback.call(this);
+                        callback.call(json);
                 },
                 error: function (err) {
                     priv.log('request error: '.f(err));
@@ -1659,9 +1679,9 @@
             return publ;
         };
 
-        publ.update = function (callback, skipCols, resetChecked, jsonData) {
+        publ.update = function (jsonData, skipCols, callback, resetChecked) {
             priv.log('publ.update called');
-            priv.update(callback, skipCols, resetChecked);
+            priv.update(callback, skipCols, resetChecked, jsonData);
             return publ;
         };
 

@@ -163,10 +163,7 @@
 							class="btn btn-danger btn-sm" type="button" value="刪除"
 							onclick="expensesSubmit.deleteDetail();" />
 					</div>
-					<div class="jqGrid_wrapper">
-						<table id="grid2"></table>
-						<div id="jqGrid2Pager"></div>
-					</div>
+					<div id="grid2" style="width: 100%"></div>
 				</div>
 			</div>
 		</section>
@@ -194,7 +191,7 @@
 <!-- self -->
 <script type="text/javascript" src="js/expenses/expenses.js"></script>
 <script type="text/javascript" src="js/expenses/expenses_valid.js"></script>
-<script type="text/javascript" src="js/expenses/expenses_grid.js"></script>
+<script type="text/javascript" src="js/expenses/expenses_grid1.js"></script>
 <script type="text/javascript" src="js/expenses/expenses_submit.js"></script>
 </body>
 </html>

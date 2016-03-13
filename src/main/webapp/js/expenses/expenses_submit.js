@@ -5,24 +5,9 @@ var expensesSubmit = function() {
   return {
 
     findMain: function() {
-      expensesGrid1.watable.update(expensesGrid1.callback);
-//      $.ajax({
-//        type: 'POST',
-//        contentType: 'application/json',
-//        url: _path + "/expenses/queryMain",
-//        dataType: "json", // data type of response
-//        data: this.formMainToJSON(),
-//        success: function(json) {
-//          commonUtils.autoJsonToGrid(_grid1, json.data);
-//          $("#table1Grid").show();
-//        },
-//        error: function(xhr, ajaxOptions, thrownError) {
-//          alert(xhr.status);
-//          alert(thrownError);
-//        }
-//      });
+      expensesGrid1.watable.update(expensesSubmit.formMainToJSON(), true);
     },
-
+    
     findDetail: function() {
       $.ajax({
         type: 'POST',
