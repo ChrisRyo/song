@@ -26,7 +26,7 @@ $(document).ready(function() {
     format: 'YYYY-MM-DD'
   });
 
-  expensesGrid.initExpensesGrid();
+  expensesGrid1.watable = expensesGrid1.init();
 
   // 表單驗證
   comValidation.validationInit(expensesValid.condition1(), _form1);

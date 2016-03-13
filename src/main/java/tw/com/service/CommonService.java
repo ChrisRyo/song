@@ -52,12 +52,12 @@ public interface CommonService {
    * 
    * @param entity
    * @param isLike
-   * @param begin
-   * @param length
+   * @param index
+   * @param size
    * @return
    * @throws Exception
    */
-  public List<?> queryByEntity(Object entity, boolean isLike, int begin, int length)
+  public List<?> queryByEntity(Object entity, boolean isLike, int index, int size)
       throws Exception;
 
   /**

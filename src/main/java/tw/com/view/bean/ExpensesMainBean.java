@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import tw.com.jersey.moxyAdapter.DateAdapter;
+import tw.com.model.dto.PageInfo;
 import tw.com.model.vo.ExpensesMain;
 
 /**
@@ -20,7 +21,7 @@ import tw.com.model.vo.ExpensesMain;
  *
  */
 @XmlRootElement
-public class ExpensesMainBean {
+public class ExpensesMainBean extends PageInfo{
 
   private ExpensesMain entity;
 

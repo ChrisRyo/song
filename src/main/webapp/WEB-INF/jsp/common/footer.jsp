@@ -9,10 +9,11 @@
 <!-- AdminLTE App -->
 <script src="plugins/almsaeed/dist/js/app.min.js"></script>
 <!-- waitMe -->
-<script src="plugins/jqWaitMe/js/waitMe.js"></script>
+<script src="plugins/jquery-waitMe/js/waitMe.js"></script>
 <!-- Validator -->
 <script src="plugins/bootstrap-validator/js/bootstrapValidator.js"></script>
 
 <!-- self -->
 <script src="js/utils/commonUtils.js"></script>
 <script src="js/utils/comValidation.js"></script>
+<script src="js/utils/gridUtils.js"></script>

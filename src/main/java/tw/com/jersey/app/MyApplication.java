@@ -6,6 +6,7 @@ import org.glassfish.jersey.server.mvc.jsp.JspMvcFeature;
 
 import tw.com.jersey.filter.BaseRequestFilter;
 import tw.com.jersey.filter.BaseResponseFilter;
+import tw.com.jersey.interceptors.GridDataReadInterceptor;
 import tw.com.jersey.mapper.ConstraintViolationsExceptionMapper;
 
 public class MyApplication extends ResourceConfig {
@@ -20,6 +21,7 @@ public class MyApplication extends ResourceConfig {
     // Filter.
     register(BaseRequestFilter.class);
     register(BaseResponseFilter.class);
+//    register(GridDataReadInterceptor.class);
 
     // MVC.
     register(MvcFeature.class);

@@ -95,16 +95,18 @@ public class CommonServiceImpl implements CommonService {
    * 
    * @param entity
    * @param isLike
-   * @param begin
-   * @param length
+   * @param index
+   * @param size
    * @return
    * @throws Exception
    */
-  public List<?> queryByEntity(Object entity, boolean isLike, int begin, int length)
-      throws Exception {
+  public List<?> queryByEntity(Object entity, boolean isLike, int index, int size) throws Exception {
     EntityManager em = EntityManagerHelper.getEntityManager();
     List<?> list = null;
     String sql = EntityUtils.getQueryEntitySql(entity, isLike);
+
+    int begin = ((index - 1) * size);
+    int length = size;
 
     Query query =
         em.createQuery(sql).setMaxResults(MAX_COUNT).setFirstResult(begin).setMaxResults(length);

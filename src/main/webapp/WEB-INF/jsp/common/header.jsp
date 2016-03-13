@@ -24,7 +24,7 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="plugins/almsaeed/dist/css/AdminLTE.min.css">
 <!-- waitMe -->
-<link rel="stylesheet" href="plugins/jqWaitMe/css/waitMe.css">
+<link rel="stylesheet" href="plugins/jquery-waitMe/css/waitMe.css">
 <!-- Validator -->
 <link rel="stylesheet"
 	href="plugins/bootstrap-validator/css/bootstrapValidator.css" />

@@ -59,8 +59,8 @@ public class ExpensesRest extends BaseRest {
   @Path("queryMain")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public ReturnMessage getMainExpenses(ExpensesMain entity) throws Exception {
-    return this.getMainData(entity);
+  public ReturnMessage getMainExpenses(ExpensesMainBean bean) throws Exception {
+    return this.getMainData(bean);
   }
 
   /**
@@ -90,7 +90,7 @@ public class ExpensesRest extends BaseRest {
   @Produces(MediaType.APPLICATION_JSON)
   public ReturnMessage addMain(@Valid ExpensesMainBean bean) throws Exception {
     service.insertByEntity(bean.getEntity());
-    return this.getMainData(bean.getEntity());
+    return this.getMainData(bean);
   }
 
   /**
@@ -121,9 +121,9 @@ public class ExpensesRest extends BaseRest {
   @Path("updateMain")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public ReturnMessage updateMain(ExpensesMain expensesMain) throws Exception {
-    service.updateByEntity(expensesMain);
-    return this.getMainData(expensesMain);
+  public ReturnMessage updateMain(@Valid ExpensesMainBean bean) throws Exception {
+    service.updateByEntity(bean.getEntity());
+    return this.getMainData(bean);
   }
 
   /**
@@ -165,15 +165,19 @@ public class ExpensesRest extends BaseRest {
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
-  private ReturnMessage getMainData(ExpensesMain entity) throws Exception {
-    
-    ExpensesMain newEntity = new ExpensesMain();
-    newEntity.setBillDate(entity.getBillDate());
-    newEntity.setBillStore(entity.getBillStore());
-    newEntity.setSource(entity.getSource());
+  private ReturnMessage getMainData(ExpensesMainBean bean) throws Exception {
 
-    List<ExpensesMain> list = (List<ExpensesMain>) service.queryByEntity(newEntity, true);
-    return new ReturnMessage(ValidCode.SUCCESS.getCode(), list);
+    ExpensesMain newEntity = new ExpensesMain();
+    newEntity.setBillDate(bean.getBillDate());
+    newEntity.setBillStore(bean.getBillStore());
+    newEntity.setSource(bean.getSource());
+
+    List<ExpensesMain> list =
+        (List<ExpensesMain>) service.queryByEntity(newEntity, true, bean.getPageIndex(),
+            bean.getPageSize());
+    int count = service.queryCountBySql(newEntity, true);
+
+    return new ReturnMessage(ValidCode.SUCCESS.getCode(), list, count);
   }
 
   /**
@@ -185,8 +189,7 @@ public class ExpensesRest extends BaseRest {
   @SuppressWarnings("unchecked")
   private ReturnMessage getDetailData(Expenses entity) throws Exception {
 
-    if (entity.getBillDate() == null || entity.getBillStore() == null
-        || entity.getSource() == null) {
+    if (entity.getBillDate() == null || entity.getBillStore() == null || entity.getSource() == null) {
       throw new Exception("缺少查詢條件");
     }
 
@@ -203,7 +206,7 @@ public class ExpensesRest extends BaseRest {
 
     Object obj =
         service.queryBySql(this.getSql(billDate, entity.getBillStore(), entity.getSource()));
-    
+
 
     return new ReturnMessage(ValidCode.SUCCESS.getCode(), list, obj);
   }
