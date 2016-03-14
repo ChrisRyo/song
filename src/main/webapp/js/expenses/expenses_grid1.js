@@ -7,7 +7,7 @@ var expensesGrid1 = function() {
     id: "grid1",
     url: "/expenses/queryMain",
     watable: new Object(),
-    
+
     coldefs: function() {
       return {
         billDate: {
@@ -38,7 +38,10 @@ var expensesGrid1 = function() {
     },
 
     rowClicked: function(data) {
-      alert(data);
+      var row = data.row;
+      for ( var o in row) {
+        $("#" + _table1 + " [id=" + o + "]").val(row[o]).change();
+      }
     },
 
     sourceFM: function(val, row) {

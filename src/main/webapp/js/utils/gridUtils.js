@@ -36,7 +36,11 @@ var gridUtils = function() {
           date: {}
         },
         tableCreated: grid.tableCreated,
-        rowClicked: grid.rowClicked,
+        rowClicked: function (data) {
+          if (typeof grid.rowClicked == 'function') {
+            grid.rowClicked.call($(this), data)
+          }
+        },
         columnClicked: grid.columnClicked,
         pageChanged: grid.pageChanged,
         pageSizeChanged: grid.pageSizeChanged
