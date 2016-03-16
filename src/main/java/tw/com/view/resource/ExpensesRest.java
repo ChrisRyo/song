@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import tw.com.logic.enums.DateStyle;
 import tw.com.logic.utils.DateUtils;
+import tw.com.logic.utils.PropertiesUtils;
 import tw.com.model.vo.Expenses;
 import tw.com.model.vo.ExpensesMain;
 import tw.com.service.CommonService;
@@ -172,9 +173,8 @@ public class ExpensesRest extends BaseRest {
     newEntity.setBillStore(bean.getBillStore());
     newEntity.setSource(bean.getSource());
 
-    List<ExpensesMain> list =
-        (List<ExpensesMain>) service.queryByEntity(newEntity, true, bean.getPageIndex(),
-            bean.getPageSize());
+    List<ExpensesMain> list = (List<ExpensesMain>) service.queryByEntity(newEntity, true,
+        bean.getPageIndex(), bean.getPageSize());
     int count = service.queryCountBySql(newEntity, true);
 
     return new ReturnMessage(ValidCode.SUCCESS.getCode(), list, count);
@@ -189,7 +189,8 @@ public class ExpensesRest extends BaseRest {
   @SuppressWarnings("unchecked")
   private ReturnMessage getDetailData(Expenses entity) throws Exception {
 
-    if (entity.getBillDate() == null || entity.getBillStore() == null || entity.getSource() == null) {
+    if (entity.getBillDate() == null || entity.getBillStore() == null
+        || entity.getSource() == null) {
       throw new Exception("缺少查詢條件");
     }
 
@@ -204,30 +205,12 @@ public class ExpensesRest extends BaseRest {
     String date = DateUtils.dateFormat(entity.getBillDate(), DateStyle.YYYY_MM_DD);
     String billDate = "STR_TO_DATE('" + date + "','" + DateStyle.YYYY_MM_DD.getSql() + "')";
 
-    Object obj =
-        service.queryBySql(this.getSql(billDate, entity.getBillStore(), entity.getSource()));
-
+    Object obj = service.queryBySql(PropertiesUtils.getSql("Expenses.queryTotalAmt", billDate,
+        entity.getBillStore(), entity.getSource()));
 
     return new ReturnMessage(ValidCode.SUCCESS.getCode(), list, obj);
   }
 
-  /**
-   * 
-   * @param val
-   * @return
-   */
-  private String getSql(Object... val) {
-    String sql = "";
-    try {
-      Properties prop = new Properties();
-      InputStream fis = getClass().getResourceAsStream("/jpql.properties");
-      prop.load(fis);
-      sql = prop.getProperty("Expenses.queryTotalAmt");
-    } catch (IOException e) {
-      LOGGER.error(e.getMessage());
-    }
 
-    return MessageFormat.format(sql, val);
-  }
 
 }

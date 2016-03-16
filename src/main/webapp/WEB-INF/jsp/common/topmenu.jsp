@@ -211,9 +211,9 @@
           </form>
           <!-- /.search form -->
 
-          <!-- Sidebar Menu -->
+          <!-- 側邊選單 -->
           <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
+            <li class="header">作業功能選單</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
             <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
