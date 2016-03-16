@@ -5,17 +5,20 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
+import tw.com.logic.utils.UserUtils;
 import tw.com.model.dto.User;
-import tw.com.model.vo.Account;
+import tw.com.model.vo.Member;
 import tw.com.service.CommonService;
 import tw.com.view.message.ReturnMessage;
 import tw.com.view.message.code.ValidCode;
@@ -48,22 +51,25 @@ public class LoginRest {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   @SuppressWarnings({"unchecked"})
-  public ReturnMessage login(User user, @Context HttpServletRequest request,
+  public ReturnMessage login(Member member, @Context HttpServletRequest request,
       @Context HttpServletResponse response) throws Exception {
 
-    Account acc = new Account();
-    acc.setUserName(user.getAccount());
-    acc.setPwd(user.getPassword());
+    Member entity = new Member();
+    entity.setUserName(member.getUserName());
+    entity.setPwd(member.getPwd());
 
-    List<Account> list = (List<Account>) service.queryByEntity(acc, false);
+    List<Member> list = (List<Member>) service.queryByEntity(entity, false);
 
     if (list == null || list.size() == 0) {
       return new ReturnMessage(ValidCode.VALID_FAIL.getCode(), "帳號或密碼錯誤！");
     }
-
+    
+    User user = new User();
+    user.setMember(list.get(0));
+    
     request.getSession().setAttribute(User.USER_SESSION, user);
 
-    return new ReturnMessage(ValidCode.SUCCESS.getCode(), request.getContextPath() + "/expenses");
+    return new ReturnMessage(ValidCode.SUCCESS.getCode(), request.getContextPath() + "/index");
   }
 
 }

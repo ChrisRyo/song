@@ -100,14 +100,14 @@ public class Expenses implements Serializable {
     }
 
     if (creatUser == null) {
-      creatUser = UserUtils.getUser().getAccount();
+      creatUser = UserUtils.getUser().getUserName();
     }
   }
 
   @PreUpdate
   protected void onUpdate() {
     updateTime = new Timestamp(new Date().getTime());
-    updateUser = UserUtils.getUser().getAccount();
+    updateUser = UserUtils.getUser().getUserName();
   }
 
 }

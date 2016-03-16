@@ -21,7 +21,7 @@ function login() {
 
 function formToJSON() {
   return JSON.stringify({
-    "account": $('#account').val(),
-    "password": $('#password').val()
+    "userName": $('#userName').val(),
+    "pwd": $('#pwd').val()
   });
 }

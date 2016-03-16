@@ -1,6 +1,8 @@
 package tw.com.model.dto;
 
 import lombok.Data;
+import lombok.experimental.Delegate;
+import tw.com.model.vo.Member;
 
 /**
  * 
@@ -12,9 +14,10 @@ public class User {
 
   public final static String USER_SESSION = "userInfo";
 
-  private String account;
-
-  private String password;
-
-  private boolean isLogin;
+  @Delegate
+  private Member member;
+  
+  public User () {
+    this.member = new Member();
+  }
 }

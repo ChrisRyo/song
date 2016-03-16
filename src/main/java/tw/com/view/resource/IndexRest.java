@@ -12,15 +12,17 @@ import tw.com.service.CommonService;
 
 @Path("/index")
 public class IndexRest extends BaseRest {
-  
+
   @Inject
   private CommonService service;
-  
+
   @GET
-  public Viewable init() {
-    
-    UserUtils.getUser().getAccount();
-    
-    return new Viewable("/index", super.getModelAndView());
+  public Viewable init() throws Exception {
+
+    Object obj =
+        service.queryBySql(PropertiesUtils.getSql("Login.queryPagePermission", UserUtils.getUser()
+            .getUserName()));
+
+    return new Viewable("/index/index_init", super.getModelAndView());
   }
 }
