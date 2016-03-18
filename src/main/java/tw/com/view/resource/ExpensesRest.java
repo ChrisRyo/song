@@ -1,10 +1,6 @@
 package tw.com.view.resource;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.MessageFormat;
 import java.util.List;
-import java.util.Properties;
 
 import javax.inject.Inject;
 import javax.validation.Valid;

@@ -29,11 +29,10 @@ import tw.com.logic.utils.UserUtils;
  */
 @Data
 @Entity
-@XmlRootElement
 @Table(name = "expensesMain")
 @IdClass(ExpensesMainPK.class)
 @NamedQuery(name = "ExpensesMain.findAll", query = "SELECT e FROM ExpensesMain e")
-public class ExpensesMain implements Serializable {
+public class ExpensesMain extends BaseEntity implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -52,18 +51,6 @@ public class ExpensesMain implements Serializable {
   @Column(name = "real_total_amt")
   private BigDecimal realTotalAmt;
 
-  @Column(name = "creat_time")
-  private Timestamp creatTime;
-
-  @Column(name = "creat_user")
-  private String creatUser;
-
-  @Column(name = "update_time")
-  private Timestamp updateTime;
-
-  @Column(name = "update_user")
-  private String updateUser;
-
   /**
    * 
    * @param source
@@ -74,23 +61,6 @@ public class ExpensesMain implements Serializable {
     } else {
       this.source = source;
     }
-  }
-
-  @PrePersist
-  protected void onCreate() {
-    if (creatTime == null) {
-      creatTime = new Timestamp(new Date().getTime());
-    }
-
-    if (creatUser == null) {
-      creatUser = UserUtils.getUser().getUserName();
-    }
-  }
-
-  @PreUpdate
-  protected void onUpdate() {
-    updateTime = new Timestamp(new Date().getTime());
-    updateUser = UserUtils.getUser().getUserName();
   }
 
 }

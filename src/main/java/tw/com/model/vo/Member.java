@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 
 /**
@@ -20,7 +19,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Entity
-@EqualsAndHashCode(callSuper=false)
 @Table(name = "member")
 @NamedQuery(name="Member.findAll", query="SELECT m FROM Member m")
 public class Member extends BaseEntity implements Serializable {
@@ -28,6 +26,8 @@ public class Member extends BaseEntity implements Serializable {
 
 	@Id
 	@NotNull
+	private Integer uid;
+	
 	@Column(name="user_name")
 	private String userName;
 

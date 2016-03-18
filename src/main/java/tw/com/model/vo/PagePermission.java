@@ -1,11 +1,11 @@
 package tw.com.model.vo;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -19,26 +19,19 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="page_permission")
+@IdClass(PagePermissionPK.class)
 @NamedQuery(name="PagePermission.findAll", query="SELECT p FROM PagePermission p")
-public class PagePermission implements Serializable {
+public class PagePermission extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private PagePermissionPK id;
+	@Id
+    private Integer uid;
 
-	@Column(name="creat_time")
-	private Timestamp creatTime;
-
-	@Column(name="creat_user")
-	private String creatUser;
+	@Id
+    @Column(name="url_id")
+    private int urlId;
 
 	@Column(name="detele_mark")
 	private byte deteleMark;
-
-	@Column(name="update_time")
-	private Timestamp updateTime;
-
-	@Column(name="update_user")
-	private String updateUser;
 
 }

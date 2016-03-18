@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import lombok.Data;
 import tw.com.logic.utils.UserUtils;
 
 
@@ -15,20 +14,19 @@ import tw.com.logic.utils.UserUtils;
  * The persistent class for the expenses database table.
  * 
  */
-@Data
-public class BaseEntity {
+public abstract class BaseEntity {
 
   @Column(name = "creat_time")
   protected Timestamp creatTime;
 
-  @Column(name = "creat_user")
-  protected String creatUser;
+  @Column(name = "creat_uid")
+  protected Integer creatUid;
 
   @Column(name = "update_time")
   protected Timestamp updateTime;
 
-  @Column(name = "update_user")
-  protected String updateUser;
+  @Column(name = "update_uid")
+  protected Integer updateUid;
 
   @PrePersist
   protected void onCreate() {
@@ -36,15 +34,15 @@ public class BaseEntity {
       creatTime = new Timestamp(new Date().getTime());
     }
 
-    if (creatUser == null) {
-      creatUser = UserUtils.getUser().getUserName();
+    if (creatUid == null) {
+      creatUid = UserUtils.getUser().getUid();
     }
   }
 
   @PreUpdate
   protected void onUpdate() {
     updateTime = new Timestamp(new Date().getTime());
-    updateUser = UserUtils.getUser().getUserName();
+    updateUid = UserUtils.getUser().getUid();
   }
 
 }

@@ -10,7 +10,6 @@ import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -19,7 +18,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @Embeddable
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExpensesMainPK implements Serializable {

@@ -18,10 +18,8 @@ import tw.com.service.CommonService;
  *
  */
 @Singleton
-public class CommonServiceImpl implements CommonService {
-
-  private final int MAX_COUNT = 10000;
-
+public class CommonServiceImpl extends BaseServiceImpl implements CommonService {
+  
   /**
    * 
    * @param sql
@@ -35,6 +33,7 @@ public class CommonServiceImpl implements CommonService {
     return query.getResultList();
   }
 
+  
   /**
    * 取得所有資料
    * 
